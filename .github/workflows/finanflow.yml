@@ -1,6 +1,7 @@
 name: FinanFlow CI
 
 on:
+  workflow_dispatch:   # allows manual trigger from GitHub Actions tab
   push:
     branches: [ "claude/finanflow-finance-app-9S1cy", "main" ]
     paths:
