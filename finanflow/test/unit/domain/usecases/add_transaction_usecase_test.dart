@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:finanflow/domain/entities/transaction_entity.dart';
-import 'package:finanflow/domain/entities/installment_entity.dart';
 import 'package:finanflow/domain/repositories/i_transaction_repository.dart';
 import 'package:finanflow/domain/usecases/transactions/add_transaction_usecase.dart';
 import 'package:finanflow/core/utils/either.dart';

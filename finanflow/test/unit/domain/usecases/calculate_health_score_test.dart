@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:finanflow/domain/usecases/analytics/calculate_health_score_usecase.dart';
 import 'package:finanflow/domain/entities/transaction_entity.dart';
-import 'package:finanflow/domain/entities/goal_entity.dart';
-import 'package:finanflow/domain/entities/budget_entity.dart';
 
 TransactionEntity _txn(TransactionType type, int cents) => TransactionEntity(
       id: 'test', userId: 'u1', categoryId: 'cat',

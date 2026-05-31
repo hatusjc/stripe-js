@@ -12,6 +12,7 @@ class AuthState {
     this.isLocked = false,
     this.hasPin = false,
     this.biometricAvailable = false,
+    this.userId,
     this.lastActiveAt,
   });
 
@@ -20,6 +21,7 @@ class AuthState {
   final bool isLocked;
   final bool hasPin;
   final bool biometricAvailable;
+  final String? userId;
   final DateTime? lastActiveAt;
 
   AuthState copyWith({
@@ -28,6 +30,7 @@ class AuthState {
     bool? isLocked,
     bool? hasPin,
     bool? biometricAvailable,
+    String? userId,
     DateTime? lastActiveAt,
   }) =>
       AuthState(
@@ -36,6 +39,7 @@ class AuthState {
         isLocked: isLocked ?? this.isLocked,
         hasPin: hasPin ?? this.hasPin,
         biometricAvailable: biometricAvailable ?? this.biometricAvailable,
+        userId: userId ?? this.userId,
         lastActiveAt: lastActiveAt ?? this.lastActiveAt,
       );
 }
@@ -71,16 +75,18 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
       onboardingComplete: user != null && onboardingComplete,
       hasPin: hasPin,
       biometricAvailable: biometricAvailable && biometricEnabled,
+      userId: user?.id,
     );
   }
 
-  void markAuthenticated() {
+  void markAuthenticated({String? userId}) {
     state = AsyncData(
       state.valueOrNull?.copyWith(
             isAuthenticated: true,
+            userId: userId,
             lastActiveAt: DateTime.now(),
           ) ??
-          const AuthState(isAuthenticated: true),
+          AuthState(isAuthenticated: true, userId: userId),
     );
   }
 

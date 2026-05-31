@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import '../../domain/entities/transaction_entity.dart';
 import '../../domain/entities/installment_entity.dart';
 import '../../domain/repositories/i_transaction_repository.dart';
-import '../../core/error/exceptions.dart';
 import '../../core/error/failures.dart';
 import '../../core/utils/either.dart';
 import '../../core/extensions/datetime_extension.dart';
