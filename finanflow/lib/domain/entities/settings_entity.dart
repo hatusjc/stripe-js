@@ -17,6 +17,7 @@ class SettingsEntity {
     required this.biometricEnabled,
     required this.plan,
     required this.updatedAt,
+    this.billNotificationDays = const [3, 2, 1, 0],
   });
 
   final String id;
@@ -34,6 +35,9 @@ class SettingsEntity {
   final PlanEntity plan;
   final DateTime updatedAt;
 
+  /// Days before due date to notify by default (e.g. [3, 2, 1, 0]).
+  final List<int> billNotificationDays;
+
   SettingsEntity copyWith({
     AppThemeMode? themeMode,
     String? language,
@@ -46,6 +50,7 @@ class SettingsEntity {
     bool? onboardingComplete,
     bool? biometricEnabled,
     PlanEntity? plan,
+    List<int>? billNotificationDays,
   }) =>
       SettingsEntity(
         id: id,
@@ -61,6 +66,7 @@ class SettingsEntity {
         onboardingComplete: onboardingComplete ?? this.onboardingComplete,
         biometricEnabled: biometricEnabled ?? this.biometricEnabled,
         plan: plan ?? this.plan,
+        billNotificationDays: billNotificationDays ?? this.billNotificationDays,
         updatedAt: DateTime.now(),
       );
 
@@ -78,6 +84,7 @@ class SettingsEntity {
         onboardingComplete: false,
         biometricEnabled: false,
         plan: PlanEntity.free,
+        billNotificationDays: const [3, 2, 1, 0],
         updatedAt: DateTime.now(),
       );
 }

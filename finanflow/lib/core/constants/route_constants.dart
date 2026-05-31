@@ -34,6 +34,7 @@ class RouteConstants {
   static const String statistics = '/profile/statistics';
   static const String simulator = '/profile/simulator';
   static const String importStatement = '/transactions/import';
+  static const String bills = '/bills';
 
   // Shortcuts (deep links)
   static const String shortcutAddExpense = '/shortcut/add-expense';

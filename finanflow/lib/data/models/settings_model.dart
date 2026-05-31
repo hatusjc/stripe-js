@@ -1,3 +1,4 @@
+import 'dart:convert';
 import '../../domain/entities/settings_entity.dart';
 import '../../domain/entities/plan_entity.dart';
 import '../../core/theme/app_theme.dart';
@@ -19,6 +20,7 @@ class SettingsModel extends SettingsEntity {
     required super.biometricEnabled,
     required super.plan,
     required super.updatedAt,
+    super.billNotificationDays,
   });
 
   factory SettingsModel.fromMap(Map<String, dynamic> map) {
@@ -55,6 +57,10 @@ class SettingsModel extends SettingsEntity {
         expiresAt: planExpiresAt,
         transactionId: map['plan_transaction_id'] as String?,
       ),
+      billNotificationDays: map['bill_notification_days'] != null
+          ? List<int>.from(
+              jsonDecode(map['bill_notification_days'] as String))
+          : const [3, 2, 1, 0],
       updatedAt: DateTimeExtension.fromMs(map['updated_at'] as int),
     );
   }
@@ -73,6 +79,7 @@ class SettingsModel extends SettingsEntity {
         onboardingComplete: entity.onboardingComplete,
         biometricEnabled: entity.biometricEnabled,
         plan: entity.plan,
+        billNotificationDays: entity.billNotificationDays,
         updatedAt: entity.updatedAt,
       );
 
@@ -92,6 +99,7 @@ class SettingsModel extends SettingsEntity {
         'plan_type': plan.type.name,
         'plan_expires_at': plan.expiresAt?.millisecondsSinceEpochUtc,
         'plan_transaction_id': plan.transactionId,
+        'bill_notification_days': jsonEncode(billNotificationDays),
         'updated_at': updatedAt.millisecondsSinceEpochUtc,
       };
 }

@@ -298,7 +298,32 @@ class DatabaseHelper {
 
   // Append-only migrations — never modify existing entries
   static const Map<int, List<String>> _migrations = {
-    // v2 migrations go here
+    2: [
+      // Bills (contas a pagar / receber)
+      '''CREATE TABLE IF NOT EXISTS bills (
+        id               TEXT    PRIMARY KEY,
+        user_id          TEXT    NOT NULL REFERENCES users(id),
+        title            TEXT    NOT NULL,
+        description      TEXT,
+        type             TEXT    NOT NULL,
+        amount           INTEGER NOT NULL,
+        due_date         INTEGER NOT NULL,
+        status           TEXT    NOT NULL DEFAULT 'pending',
+        category_id      TEXT    REFERENCES categories(id),
+        account_id       TEXT    REFERENCES accounts(id),
+        recurrence       TEXT    NOT NULL DEFAULT 'none',
+        reminder_days    TEXT    NOT NULL DEFAULT '[3,2,1,0]',
+        notification_ids TEXT    NOT NULL DEFAULT '[]',
+        paid_at          INTEGER,
+        created_at       INTEGER NOT NULL,
+        updated_at       INTEGER NOT NULL,
+        deleted_at       INTEGER
+      )''',
+      'CREATE INDEX IF NOT EXISTS idx_bills_user_id ON bills(user_id)',
+      'CREATE INDEX IF NOT EXISTS idx_bills_due_date ON bills(user_id, due_date, deleted_at)',
+      // Global notification timing preference per user
+      "ALTER TABLE settings ADD COLUMN bill_notification_days TEXT NOT NULL DEFAULT '[3,2,1,0]'",
+    ],
   };
 
   Future<void> _seedDefaultCategories(Database db) async {

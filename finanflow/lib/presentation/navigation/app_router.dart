@@ -23,6 +23,7 @@ import '../screens/goals/goals_screen.dart';
 import '../screens/budget/budget_screen.dart';
 import '../screens/statistics/statistics_screen.dart';
 import '../screens/simulator/simulator_screen.dart';
+import '../screens/bills/bills_screen.dart';
 import 'app_navigation.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -132,6 +133,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 GoRoute(path: 'budget', builder: (_, __) => const BudgetScreen()),
                 GoRoute(path: 'statistics', builder: (_, __) => const StatisticsScreen()),
                 GoRoute(path: 'simulator', builder: (_, __) => const SimulatorScreen()),
+                GoRoute(path: 'bills', builder: (_, __) => const BillsScreen()),
               ],
             ),
           ]),

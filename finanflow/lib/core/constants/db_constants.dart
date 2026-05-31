@@ -2,7 +2,7 @@ class DbConstants {
   DbConstants._();
 
   static const String dbName = 'finanflow.db';
-  static const int dbVersion = 1;
+  static const int dbVersion = 2;
 
   // Tables
   static const String tableUsers = 'users';
@@ -18,6 +18,7 @@ class DbConstants {
   static const String tableReports = 'reports';
   static const String tableBackups = 'backups';
   static const String tableLogs = 'logs';
+  static const String tableBills = 'bills';
 
   // Common columns
   static const String colId = 'id';
