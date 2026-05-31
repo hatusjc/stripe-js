@@ -1,0 +1,116 @@
+import 'dart:convert';
+import '../../domain/entities/transaction_entity.dart';
+import '../../core/extensions/datetime_extension.dart';
+
+class TransactionModel extends TransactionEntity {
+  const TransactionModel({
+    required super.id,
+    required super.userId,
+    required super.categoryId,
+    required super.type,
+    required super.amountCents,
+    required super.date,
+    required super.status,
+    required super.isRecurring,
+    required super.createdAt,
+    required super.updatedAt,
+    super.accountId,
+    super.creditCardId,
+    super.description,
+    super.notes,
+    super.recurrenceRule,
+    super.recurrenceId,
+    super.installmentId,
+    super.installmentNum,
+    super.transferId,
+    super.tags,
+    super.latitude,
+    super.longitude,
+    super.deletedAt,
+  });
+
+  factory TransactionModel.fromMap(Map<String, dynamic> map) => TransactionModel(
+        id: map['id'] as String,
+        userId: map['user_id'] as String,
+        accountId: map['account_id'] as String?,
+        creditCardId: map['credit_card_id'] as String?,
+        categoryId: map['category_id'] as String,
+        type: TransactionType.values.firstWhere((e) => e.name == map['type']),
+        amountCents: map['amount'] as int,
+        description: map['description'] as String?,
+        notes: map['notes'] as String?,
+        date: DateTimeExtension.fromMs(map['date'] as int),
+        isRecurring: (map['is_recurring'] as int? ?? 0) == 1,
+        recurrenceRule: map['recurrence_rule'] as String?,
+        recurrenceId: map['recurrence_id'] as String?,
+        installmentId: map['installment_id'] as String?,
+        installmentNum: map['installment_num'] as int?,
+        transferId: map['transfer_id'] as String?,
+        status: TransactionStatus.values.firstWhere(
+          (e) => e.name == (map['status'] as String? ?? 'confirmed'),
+          orElse: () => TransactionStatus.confirmed,
+        ),
+        tags: map['tags'] != null
+            ? List<String>.from(jsonDecode(map['tags'] as String))
+            : null,
+        latitude: map['latitude'] as double?,
+        longitude: map['longitude'] as double?,
+        createdAt: DateTimeExtension.fromMs(map['created_at'] as int),
+        updatedAt: DateTimeExtension.fromMs(map['updated_at'] as int),
+        deletedAt: map['deleted_at'] != null
+            ? DateTimeExtension.fromMs(map['deleted_at'] as int)
+            : null,
+      );
+
+  factory TransactionModel.fromEntity(TransactionEntity entity) => TransactionModel(
+        id: entity.id,
+        userId: entity.userId,
+        accountId: entity.accountId,
+        creditCardId: entity.creditCardId,
+        categoryId: entity.categoryId,
+        type: entity.type,
+        amountCents: entity.amountCents,
+        description: entity.description,
+        notes: entity.notes,
+        date: entity.date,
+        isRecurring: entity.isRecurring,
+        recurrenceRule: entity.recurrenceRule,
+        recurrenceId: entity.recurrenceId,
+        installmentId: entity.installmentId,
+        installmentNum: entity.installmentNum,
+        transferId: entity.transferId,
+        status: entity.status,
+        tags: entity.tags,
+        latitude: entity.latitude,
+        longitude: entity.longitude,
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
+        deletedAt: entity.deletedAt,
+      );
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'user_id': userId,
+        'account_id': accountId,
+        'credit_card_id': creditCardId,
+        'category_id': categoryId,
+        'type': type.name,
+        'amount': amountCents,
+        'description': description,
+        'notes': notes,
+        'date': date.millisecondsSinceEpochUtc,
+        'is_recurring': isRecurring ? 1 : 0,
+        'recurrence_rule': recurrenceRule,
+        'recurrence_id': recurrenceId,
+        'installment_id': installmentId,
+        'installment_num': installmentNum,
+        'transfer_id': transferId,
+        'status': status.name,
+        'tags': tags != null ? jsonEncode(tags) : null,
+        'latitude': latitude,
+        'longitude': longitude,
+        'created_at': createdAt.millisecondsSinceEpochUtc,
+        'updated_at': updatedAt.millisecondsSinceEpochUtc,
+        'deleted_at': deletedAt?.millisecondsSinceEpochUtc,
+      };
+}
