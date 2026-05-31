@@ -15,7 +15,7 @@
     <uses-feature android:name="android.hardware.fingerprint" android:required="false"/>
 
     <application
-        android:label="finanflow"
+        android:label="FinanFlow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

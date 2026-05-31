@@ -105,6 +105,16 @@ class ProfileScreen extends ConsumerWidget {
             onTap: () => context.go('/profile/backup'),
           ),
 
+          // ── Legal ──────────────────────────────────────────────────────
+          _SectionHeader(label: 'Legal'),
+          _Tile(
+            icon: Icons.privacy_tip_outlined,
+            iconColor: Colors.grey,
+            title: 'Política de Privacidade',
+            subtitle: 'Como seus dados são protegidos',
+            onTap: () => context.go('/profile/privacy'),
+          ),
+
           const SizedBox(height: 32),
         ],
       ),

@@ -1,0 +1,12 @@
+# Copy this file to android/key.properties (which is gitignored) and fill in your values.
+# NEVER commit key.properties or your .keystore file to version control.
+#
+# Generate your keystore with:
+#   keytool -genkey -v -keystore finanflow.keystore \
+#     -alias finanflow -keyalg RSA -keysize 2048 -validity 10000
+# Then place finanflow.keystore inside android/app/
+
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=finanflow
+storeFile=../app/finanflow.keystore

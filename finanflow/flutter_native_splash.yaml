@@ -1,0 +1,28 @@
+# flutter_native_splash configuration
+# Docs: https://pub.dev/packages/flutter_native_splash
+#
+# After editing run: dart run flutter_native_splash:create
+
+flutter_native_splash:
+  # Brand color — matches AppColors.seed (#1E6B4C)
+  color: "#1E6B4C"
+  color_dark: "#0D3D29"
+
+  # Optional: your logo centered on the splash (recommended 288x288 px)
+  # image: assets/icons/splash_logo.png
+  # image_dark: assets/icons/splash_logo_dark.png
+
+  # Android 12+ specific (uses windowSplashScreenAnimatedIcon)
+  android_12:
+    color: "#1E6B4C"
+    color_dark: "#0D3D29"
+    # image: assets/icons/splash_logo.png
+    icon_background_color: "#1E6B4C"
+
+  # Keep the splash visible until Flutter signals it's ready
+  fullscreen: false
+
+  # Supported platforms
+  android: true
+  ios: true
+  web: false
