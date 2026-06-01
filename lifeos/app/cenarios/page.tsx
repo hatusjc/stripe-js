@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { useFinanceStore } from '@/lib/store/useFinanceStore';
+import { usePlanStore } from '@/lib/store/planStore';
 import { formatCurrency } from '@/lib/utils';
-import { Calculator, TrendingUp, TrendingDown, Home, Briefcase, PiggyBank, Clock } from 'lucide-react';
+import { Calculator, TrendingUp, TrendingDown, Home, Briefcase, PiggyBank, Clock, Crown } from 'lucide-react';
+import Link from 'next/link';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
@@ -17,15 +19,16 @@ interface ScenarioResult {
   recommendations: string[];
 }
 
-const SCENARIOS: { id: ScenarioType; label: string; icon: typeof TrendingUp; desc: string }[] = [
-  { id: 'demissao', label: 'E se eu fosse demitido?', icon: TrendingDown, desc: 'Simula perda de renda e quanto tempo sua reserva dura' },
-  { id: 'imovel', label: 'E se eu comprasse um imóvel?', icon: Home, desc: 'Simula financiamento e impacto no fluxo de caixa' },
-  { id: 'aumento', label: 'E se eu ganhasse um aumento?', icon: TrendingUp, desc: 'Simula aumento salarial e potencial de poupança' },
-  { id: 'aposentadoria', label: 'E se eu me aposentasse antecipado?', icon: Clock, desc: 'Calcula quanto precisa acumular para a independência financeira' },
+const SCENARIOS: { id: ScenarioType; label: string; icon: typeof TrendingUp; desc: string; premium: boolean }[] = [
+  { id: 'demissao', label: 'E se eu fosse demitido?', icon: TrendingDown, desc: 'Simula perda de renda e quanto tempo sua reserva dura', premium: false },
+  { id: 'aumento', label: 'E se eu ganhasse um aumento?', icon: TrendingUp, desc: 'Simula aumento salarial e potencial de poupança', premium: false },
+  { id: 'imovel', label: 'E se eu comprasse um imóvel?', icon: Home, desc: 'Simula financiamento e impacto no fluxo de caixa', premium: true },
+  { id: 'aposentadoria', label: 'E se eu me aposentasse antecipado?', icon: Clock, desc: 'Calcula quanto precisa acumular para a independência financeira', premium: true },
 ];
 
 export default function CenariosPage() {
   const { getTotalBalance, getMonthlyIncome, getMonthlyExpenses } = useFinanceStore();
+  const { isPremium } = usePlanStore();
   const [active, setActive] = useState<ScenarioType>('demissao');
 
   const balance = getTotalBalance();
@@ -174,17 +177,33 @@ export default function CenariosPage() {
 
       {/* Scenario selector */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {SCENARIOS.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => setActive(s.id)}
-            className={`p-4 rounded-xl border text-left transition-all ${active === s.id ? 'bg-blue-600/20 border-blue-500/40 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'}`}
-          >
-            <s.icon size={20} className={active === s.id ? 'text-blue-400 mb-2' : 'text-slate-500 mb-2'} />
-            <p className="text-sm font-medium leading-snug">{s.label}</p>
-            <p className="text-xs mt-1 opacity-60">{s.desc}</p>
-          </button>
-        ))}
+        {SCENARIOS.map((s) => {
+          const locked = s.premium && !isPremium();
+          return locked ? (
+            <Link
+              key={s.id}
+              href="/planos"
+              className="p-4 rounded-xl border border-amber-500/20 bg-slate-900/50 text-left transition-all hover:border-amber-500/40 relative group"
+            >
+              <div className="absolute top-3 right-3">
+                <Crown size={13} className="text-amber-400" />
+              </div>
+              <s.icon size={20} className="text-slate-600 mb-2" />
+              <p className="text-sm font-medium text-slate-500 leading-snug">{s.label}</p>
+              <p className="text-xs mt-1 text-amber-500/70">Premium — Ver planos</p>
+            </Link>
+          ) : (
+            <button
+              key={s.id}
+              onClick={() => setActive(s.id)}
+              className={`p-4 rounded-xl border text-left transition-all ${active === s.id ? 'bg-blue-600/20 border-blue-500/40 text-white' : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600'}`}
+            >
+              <s.icon size={20} className={active === s.id ? 'text-blue-400 mb-2' : 'text-slate-500 mb-2'} />
+              <p className="text-sm font-medium leading-snug">{s.label}</p>
+              <p className="text-xs mt-1 opacity-60">{s.desc}</p>
+            </button>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

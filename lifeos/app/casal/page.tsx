@@ -1,5 +1,6 @@
 'use client';
 
+import { PremiumGate } from '@/components/plan/PremiumGate';
 import { useState, useEffect } from 'react';
 import { useCoupleStore, usePollPartnerNotifications } from '@/lib/store/coupleStore';
 import { useAuthStore } from '@/lib/store/useAuthStore';
@@ -16,7 +17,7 @@ import {
   Shield, TrendingUp, TrendingDown, Lock, Globe
 } from 'lucide-react';
 
-export default function CasalPage() {
+function CasalPageContent() {
   const { user } = useAuthStore();
   const { link, notifications } = useCoupleStore();
   const { getTotalBalance, getMonthlyIncome, getMonthlyExpenses, transactions } = useFinanceStore();
@@ -255,5 +256,16 @@ export default function CasalPage() {
         </Card>
       )}
     </div>
+  );
+}
+
+export default function CasalPage() {
+  return (
+    <PremiumGate
+      feature="Espaço do Casal"
+      description="Crie espaços privados e compartilhados com seu cônjuge. Receba notificações em tempo real quando qualquer dado compartilhado for modificado."
+    >
+      <CasalPageContent />
+    </PremiumGate>
   );
 }

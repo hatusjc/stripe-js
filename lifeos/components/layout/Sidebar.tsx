@@ -7,32 +7,33 @@ import { useAppStore } from '@/lib/store/useAppStore';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useCoupleStore } from '@/lib/store/coupleStore';
 import { useBankNotificationStore } from '@/lib/store/bankNotificationStore';
+import { usePlanStore } from '@/lib/store/planStore';
 import {
   LayoutDashboard, DollarSign, FolderKanban, Target, Shield,
   BookOpen, Users, Brain, HeartPulse, Zap, Building2,
   Bell, ChevronRight, Star, LogOut, X, Heart, Smartphone,
-  PiggyBank, TrendingUp, CalendarCheck, Landmark,
+  PiggyBank, TrendingUp, CalendarCheck, Landmark, Crown,
 } from 'lucide-react';
 
 const navItems = [
-  { href: '/', icon: LayoutDashboard, label: 'Dashboard', color: 'text-blue-400' },
-  { href: '/financas', icon: DollarSign, label: 'Finanças', color: 'text-emerald-400' },
-  { href: '/orcamento', icon: PiggyBank, label: 'Orçamento', color: 'text-emerald-300' },
-  { href: '/cenarios', icon: TrendingUp, label: 'Cenários "E se?"', color: 'text-teal-400' },
-  { href: '/projetos', icon: FolderKanban, label: 'Projetos', color: 'text-purple-400' },
-  { href: '/objetivos', icon: Target, label: 'Objetivos', color: 'text-orange-400' },
-  { href: '/responsabilidades', icon: Shield, label: 'Responsabilidades', color: 'text-red-400' },
-  { href: '/patrimonio', icon: Building2, label: 'Patrimônio', color: 'text-yellow-400' },
-  { href: '/familia', icon: Users, label: 'Família', color: 'text-pink-400' },
-  { href: '/saude', icon: HeartPulse, label: 'Saúde', color: 'text-green-400' },
-  { href: '/conhecimento', icon: BookOpen, label: 'Conhecimento', color: 'text-cyan-400' },
-  { href: '/decisoes', icon: Brain, label: 'Decisões', color: 'text-violet-400' },
-  { href: '/ia', icon: Zap, label: 'LifeOS AI', color: 'text-amber-400' },
-  { href: '/checkin', icon: CalendarCheck, label: 'Check-in Semanal', color: 'text-indigo-400' },
-  { href: '/casal', icon: Heart, label: 'Casal', color: 'text-pink-400' },
-  { href: '/notificacoes', icon: Smartphone, label: 'Notif. Bancárias', color: 'text-blue-400' },
-  { href: '/openfinance', icon: Landmark, label: 'Open Finance', color: 'text-sky-400' },
-  { href: '/relatorio', icon: Bell, label: 'Relatório Semanal', color: 'text-slate-400' },
+  { href: '/', icon: LayoutDashboard, label: 'Dashboard', color: 'text-blue-400', premium: false },
+  { href: '/financas', icon: DollarSign, label: 'Finanças', color: 'text-emerald-400', premium: false },
+  { href: '/orcamento', icon: PiggyBank, label: 'Orçamento', color: 'text-emerald-300', premium: false },
+  { href: '/cenarios', icon: TrendingUp, label: 'Cenários "E se?"', color: 'text-teal-400', premium: false },
+  { href: '/projetos', icon: FolderKanban, label: 'Projetos', color: 'text-purple-400', premium: false },
+  { href: '/objetivos', icon: Target, label: 'Objetivos', color: 'text-orange-400', premium: false },
+  { href: '/responsabilidades', icon: Shield, label: 'Responsabilidades', color: 'text-red-400', premium: false },
+  { href: '/patrimonio', icon: Building2, label: 'Patrimônio', color: 'text-yellow-400', premium: false },
+  { href: '/familia', icon: Users, label: 'Família', color: 'text-pink-400', premium: false },
+  { href: '/saude', icon: HeartPulse, label: 'Saúde', color: 'text-green-400', premium: false },
+  { href: '/conhecimento', icon: BookOpen, label: 'Conhecimento', color: 'text-cyan-400', premium: false },
+  { href: '/decisoes', icon: Brain, label: 'Decisões', color: 'text-violet-400', premium: false },
+  { href: '/ia', icon: Zap, label: 'LifeOS AI', color: 'text-amber-400', premium: false },
+  { href: '/checkin', icon: CalendarCheck, label: 'Check-in Semanal', color: 'text-indigo-400', premium: false },
+  { href: '/relatorio', icon: Bell, label: 'Relatório Semanal', color: 'text-slate-400', premium: false },
+  { href: '/casal', icon: Heart, label: 'Casal', color: 'text-pink-400', premium: true },
+  { href: '/notificacoes', icon: Smartphone, label: 'Notif. Bancárias', color: 'text-blue-400', premium: true },
+  { href: '/openfinance', icon: Landmark, label: 'Open Finance', color: 'text-sky-400', premium: true },
 ];
 
 interface SidebarProps {
@@ -46,6 +47,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const { user, logout } = useAuthStore();
   const { notifications: coupleNotifs } = useCoupleStore();
   const { pendingTransactions } = useBankNotificationStore();
+  const { plan } = usePlanStore();
   const unreadAlerts = alerts.filter((a) => !a.read).length;
   const unreadCouple = coupleNotifs.filter((n) => !n.read).length;
   const pendingBankCount = pendingTransactions.length;
@@ -107,6 +109,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
       <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
+          const isLocked = item.premium && plan === 'free';
           return (
             <Link
               key={item.href}
@@ -116,12 +119,15 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group',
                 isActive
                   ? 'bg-blue-600/20 text-white border border-blue-500/20'
+                  : isLocked
+                  ? 'text-slate-600 hover:text-slate-500 hover:bg-slate-800/50'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
               )}
             >
-              <item.icon size={16} className={isActive ? item.color : 'text-slate-500 group-hover:text-slate-300'} />
+              <item.icon size={16} className={isActive ? item.color : isLocked ? 'text-slate-700' : 'text-slate-500 group-hover:text-slate-300'} />
               <span className="flex-1 font-medium">{item.label}</span>
-              {(() => {
+              {isLocked && <Crown size={11} className="text-amber-600/60 shrink-0" />}
+              {!isLocked && (() => {
                 const badge = getBadge(item.href);
                 if (!badge) return null;
                 const color = item.href === '/casal' ? 'bg-pink-500' : item.href === '/notificacoes' ? 'bg-amber-500' : 'bg-red-500';
@@ -131,11 +137,36 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
                   </span>
                 );
               })()}
-              {isActive && <ChevronRight size={12} className="text-blue-400" />}
+              {isActive && !isLocked && <ChevronRight size={12} className="text-blue-400" />}
             </Link>
           );
         })}
       </nav>
+
+      {/* Plan CTA */}
+      {plan === 'free' ? (
+        <div className="px-3 pb-1">
+          <Link
+            href="/planos"
+            onClick={onMobileClose}
+            className="flex items-center gap-2 w-full px-3 py-2.5 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 hover:border-amber-500/40 rounded-xl transition-all group"
+          >
+            <Crown size={14} className="text-amber-400" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-amber-300">Upgrade Premium</p>
+              <p className="text-[10px] text-slate-500">R$29,90/mês</p>
+            </div>
+            <ChevronRight size={12} className="text-amber-500/50 group-hover:text-amber-400 transition-colors" />
+          </Link>
+        </div>
+      ) : (
+        <div className="px-4 pb-1">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 rounded-lg">
+            <Crown size={11} className="text-amber-400" />
+            <span className="text-[10px] text-amber-400 font-semibold">PREMIUM ATIVO</span>
+          </div>
+        </div>
+      )}
 
       {/* User + Logout */}
       <div className="px-3 py-3 border-t border-slate-800 space-y-1">

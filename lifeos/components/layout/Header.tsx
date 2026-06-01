@@ -23,6 +23,7 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/cenarios': { title: 'Cenários "E se?"', subtitle: 'Simulador de decisões financeiras' },
   '/checkin': { title: 'Check-in Semanal', subtitle: 'Reflexão e atualização do Life Score' },
   '/openfinance': { title: 'Open Finance', subtitle: 'Conexão com instituições bancárias' },
+  '/planos': { title: 'Planos', subtitle: 'Gratuito e Premium' },
 };
 
 interface HeaderProps {

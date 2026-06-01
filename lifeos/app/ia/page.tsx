@@ -4,9 +4,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useFinanceStore } from '@/lib/store/useFinanceStore';
 import { useProjectStore } from '@/lib/store/useProjectStore';
 import { useAppStore } from '@/lib/store/useAppStore';
+import { usePlanStore } from '@/lib/store/planStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { formatCurrency, getScoreColor, cn } from '@/lib/utils';
-import { Zap, Send, Sparkles, RefreshCw, RotateCcw, User } from 'lucide-react';
+import { Zap, Send, Sparkles, RefreshCw, RotateCcw, User, Crown } from 'lucide-react';
+import Link from 'next/link';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -114,8 +116,12 @@ export default function IAPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const { canSendAI, trackAIMessage, aiRemaining, isPremium } = usePlanStore();
+
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
+    if (!canSendAI()) return;
+    trackAIMessage();
 
     const context = buildContext(financeStore, projectStore, appStore);
     const userMsg: Message = { role: 'user', content: text };
@@ -305,37 +311,50 @@ export default function IAPage() {
             </div>
 
             <div className="p-4 border-t border-slate-800">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
-                  placeholder="Pergunte algo sobre sua vida..."
-                  className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
-                  disabled={isLoading}
-                />
-                {isLoading ? (
-                  <button
-                    onClick={stopGeneration}
-                    className="flex items-center gap-1.5 bg-red-600/80 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
-                  >
-                    <RefreshCw size={14} className="animate-spin" />
-                    <span className="hidden sm:block">Parar</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => sendMessage(input)}
-                    disabled={!input.trim()}
-                    className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
-                  >
-                    <Send size={14} />
-                    <span className="hidden sm:block">Enviar</span>
-                  </button>
-                )}
-              </div>
+              {!canSendAI() ? (
+                <div className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3">
+                  <Crown size={16} className="text-amber-400 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-amber-300 font-medium">Limite diário atingido</p>
+                    <p className="text-xs text-slate-500">Plano gratuito: 10 mensagens/dia. Renova à meia-noite.</p>
+                  </div>
+                  <Link href="/planos" className="shrink-0 px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-xs font-semibold transition-all">Premium</Link>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage(input)}
+                    placeholder="Pergunte algo sobre sua vida..."
+                    className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                    disabled={isLoading}
+                  />
+                  {isLoading ? (
+                    <button
+                      onClick={stopGeneration}
+                      className="flex items-center gap-1.5 bg-red-600/80 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                    >
+                      <RefreshCw size={14} className="animate-spin" />
+                      <span className="hidden sm:block">Parar</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => sendMessage(input)}
+                      disabled={!input.trim()}
+                      className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                    >
+                      <Send size={14} />
+                      <span className="hidden sm:block">Enviar</span>
+                    </button>
+                  )}
+                </div>
+              )}
               <p className="text-[10px] text-slate-600 mt-2 text-center">
-                Configure ANTHROPIC_API_KEY no .env.local para ativar a IA completa
+                {isPremium()
+                  ? 'LifeOS AI ilimitado — plano Premium ativo'
+                  : `${aiRemaining()} mensagens restantes hoje · Configure ANTHROPIC_API_KEY no .env.local`}
               </p>
             </div>
           </Card>

@@ -1,5 +1,6 @@
 'use client';
 
+import { PremiumGate } from '@/components/plan/PremiumGate';
 import { useState } from 'react';
 import { CheckCircle2, Link2, AlertCircle, RefreshCw, ExternalLink, Shield, Building2 } from 'lucide-react';
 import { generateId } from '@/lib/utils';
@@ -27,7 +28,7 @@ const BANKS = [
 
 type OAuthStep = 'idle' | 'consent' | 'bank_login' | 'mfa' | 'success' | 'error';
 
-export default function OpenFinancePage() {
+function OpenFinanceContent() {
   const [connected, setConnected] = useState<ConnectedBank[]>([]);
   const [oauthStep, setOauthStep] = useState<OAuthStep>('idle');
   const [selectedBank, setSelectedBank] = useState<typeof BANKS[0] | null>(null);
@@ -282,5 +283,16 @@ export default function OpenFinancePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OpenFinancePage() {
+  return (
+    <PremiumGate
+      feature="Open Finance Brasil"
+      description="Conecte suas contas bancárias diretamente via API Open Finance do Banco Central. Sincronize transações automaticamente de Nubank, Itaú, Bradesco, BB, Santander e mais."
+    >
+      <OpenFinanceContent />
+    </PremiumGate>
   );
 }

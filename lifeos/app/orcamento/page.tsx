@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useBudgetStore } from '@/lib/store/budgetStore';
 import { useFinanceStore } from '@/lib/store/useFinanceStore';
+import { usePlanStore } from '@/lib/store/planStore';
 import { formatCurrency } from '@/lib/utils';
-import { Plus, Pencil, Trash2, AlertTriangle, CheckCircle2, TrendingUp } from 'lucide-react';
+import { Plus, Pencil, Trash2, AlertTriangle, CheckCircle2, TrendingUp, Crown } from 'lucide-react';
+import Link from 'next/link';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
@@ -37,10 +39,14 @@ const COLOR_HEX: Record<string, string> = {
   'bg-pink-500': '#ec4899',
 };
 
+const FREE_BUDGET_LIMIT = 4;
+
 export default function OrcamentoPage() {
   const { budgets, alerts, addBudget, updateBudget, removeBudget, dismissAlert } = useBudgetStore();
   const { transactions } = useFinanceStore();
+  const { isPremium } = usePlanStore();
   const [showForm, setShowForm] = useState(false);
+  const canAddMore = isPremium() || budgets.length < FREE_BUDGET_LIMIT;
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ name: '', limit: '', category: 'outros', color: 'bg-blue-500', icon: '📦' });
 
@@ -97,12 +103,21 @@ export default function OrcamentoPage() {
           <h2 className="text-xl font-bold text-white">Orçamento por Categoria</h2>
           <p className="text-slate-400 text-sm mt-0.5">Controle seus gastos mensais por área</p>
         </div>
-        <button
-          onClick={() => { setEditId(null); setForm({ name: '', limit: '', category: 'outros', color: 'bg-blue-500', icon: '📦' }); setShowForm(true); }}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all"
-        >
-          <Plus size={16} /> Nova Categoria
-        </button>
+        {canAddMore ? (
+          <button
+            onClick={() => { setEditId(null); setForm({ name: '', limit: '', category: 'outros', color: 'bg-blue-500', icon: '📦' }); setShowForm(true); }}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-all"
+          >
+            <Plus size={16} /> Nova Categoria
+          </button>
+        ) : (
+          <Link
+            href="/planos"
+            className="flex items-center gap-2 px-4 py-2 bg-amber-500/20 border border-amber-500/40 hover:bg-amber-500/30 text-amber-400 rounded-lg text-sm font-medium transition-all"
+          >
+            <Crown size={14} /> Limite atingido — Premium
+          </Link>
+        )}
       </div>
 
       {/* Summary cards */}
