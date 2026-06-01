@@ -77,11 +77,14 @@ interface PlanStore {
 
 const FREE_AI_LIMIT = 10;
 
+// Build-time default — overridden by NEXT_PUBLIC_DEFAULT_PLAN env var for demo builds
+const DEFAULT_PLAN: Plan = (process.env.NEXT_PUBLIC_DEFAULT_PLAN as Plan) ?? 'free';
+
 export const usePlanStore = create<PlanStore>()(
   persist(
     (set, get) => ({
-      plan: 'free',
-      activatedAt: null,
+      plan: DEFAULT_PLAN,
+      activatedAt: DEFAULT_PLAN === 'premium' ? new Date().toISOString() : null,
       expiresAt: null,
       isTrial: false,
       aiMessagesToday: 0,

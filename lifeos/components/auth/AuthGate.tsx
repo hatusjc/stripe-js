@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
+import { usePlanStore } from '@/lib/store/planStore';
 import { cn } from '@/lib/utils';
 import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
+
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === '1';
+const DEFAULT_PLAN = process.env.NEXT_PUBLIC_DEFAULT_PLAN;
 
 interface AuthGateProps {
   children: React.ReactNode;
@@ -11,6 +15,7 @@ interface AuthGateProps {
 
 export function AuthGate({ children }: AuthGateProps) {
   const { user, login, register, isLoading } = useAuthStore();
+  const upgradeToPremium = usePlanStore((s) => s.upgradeToPremium);
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,6 +25,14 @@ export function AuthGate({ children }: AuthGateProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+
+  const handleDemoAccess = () => {
+    const demoUser = { id: 'demo-user', name: 'Usuário Demo', email: 'demo@lifeos.app', onboardingComplete: true };
+    useAuthStore.setState({ user: demoUser });
+    if (DEFAULT_PLAN === 'premium') {
+      upgradeToPremium();
+    }
+  };
 
   if (!mounted) return null;
   if (user) return <>{children}</>;
@@ -169,9 +182,23 @@ export function AuthGate({ children }: AuthGateProps) {
             </p>
           </div>
 
-          <div className="mt-4 pt-4 border-t border-slate-800">
-            <p className="text-[10px] text-slate-600 text-center">Demo rápido: use qualquer email + senha para testar</p>
-          </div>
+          {IS_DEMO && (
+            <div className="mt-4 pt-4 border-t border-slate-800">
+              <button
+                onClick={handleDemoAccess}
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white rounded-xl py-3 text-sm font-bold transition-all shadow-lg shadow-amber-500/20"
+              >
+                <Zap size={16} />
+                {DEFAULT_PLAN === 'premium' ? '⚡ Acessar demo Premium' : '⚡ Acessar demo agora'}
+              </button>
+              <p className="text-[10px] text-slate-600 text-center mt-2">Sem cadastro · acesso imediato</p>
+            </div>
+          )}
+          {!IS_DEMO && (
+            <div className="mt-4 pt-4 border-t border-slate-800">
+              <p className="text-[10px] text-slate-600 text-center">Demo rápido: use qualquer email + senha para testar</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
