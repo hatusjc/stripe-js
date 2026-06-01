@@ -6,6 +6,7 @@ import { AuthGate } from '@/components/auth/AuthGate';
 import { OnboardingWizard } from '@/components/onboarding/OnboardingWizard';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { FloatingApprovalQueue } from '@/components/notifications/FloatingApprovalQueue';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { user } = useAuthStore();
@@ -23,6 +24,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      {/* Global floating bank notification approvals */}
+      <FloatingApprovalQueue />
     </div>
   );
 }

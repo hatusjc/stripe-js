@@ -21,6 +21,63 @@ export interface Transaction {
   installments?: number;
   currentInstallment?: number;
   tags?: string[];
+  // Enhanced fields
+  photo?: string;          // base64 data URL
+  notes?: string;
+  receipt?: string;        // base64 of receipt photo
+  shared?: boolean;        // visible to partner
+  addedBy?: string;        // userId who added
+  fromNotification?: boolean;
+}
+
+// Couple system
+export interface CoupleLink {
+  myUserId: string;
+  partnerId: string;
+  partnerName: string;
+  partnerEmail: string;
+  linkedAt: string;
+  sharedAreas: LifeArea[];
+}
+
+export interface CoupleNotification {
+  id: string;
+  fromUserId: string;
+  fromName: string;
+  toUserId: string;
+  area: LifeArea | 'financas';
+  action: 'add' | 'edit' | 'delete';
+  entityType: string;
+  entityTitle: string;
+  details?: string;
+  createdAt: string;
+  read: boolean;
+}
+
+// Bank notification
+export interface BankNotificationRaw {
+  id: string;
+  source: string;           // bank name
+  rawText: string;
+  parsedAmount?: number;
+  parsedType?: 'receita' | 'despesa';
+  parsedDescription?: string;
+  parsedDate?: string;
+  receivedAt: string;
+  status: 'pending' | 'approved' | 'rejected';
+}
+
+export interface PendingTransaction {
+  id: string;
+  bankNotificationId?: string;
+  type: 'receita' | 'despesa';
+  description: string;
+  amount: number;
+  date: string;
+  category: string;
+  photo?: string;
+  notes?: string;
+  source: string;
 }
 
 export interface Account {

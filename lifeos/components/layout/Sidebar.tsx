@@ -5,10 +5,12 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store/useAppStore';
 import { useAuthStore } from '@/lib/store/useAuthStore';
+import { useCoupleStore } from '@/lib/store/coupleStore';
+import { useBankNotificationStore } from '@/lib/store/bankNotificationStore';
 import {
   LayoutDashboard, DollarSign, FolderKanban, Target, Shield,
   BookOpen, Users, Brain, HeartPulse, Zap, Building2,
-  Bell, Settings, ChevronRight, Star, LogOut, X
+  Bell, ChevronRight, Star, LogOut, X, Heart, Smartphone
 } from 'lucide-react';
 
 const navItems = [
@@ -23,6 +25,8 @@ const navItems = [
   { href: '/conhecimento', icon: BookOpen, label: 'Conhecimento', color: 'text-cyan-400' },
   { href: '/decisoes', icon: Brain, label: 'Decisões', color: 'text-violet-400' },
   { href: '/ia', icon: Zap, label: 'LifeOS AI', color: 'text-amber-400' },
+  { href: '/casal', icon: Heart, label: 'Casal', color: 'text-pink-400' },
+  { href: '/notificacoes', icon: Smartphone, label: 'Notif. Bancárias', color: 'text-blue-400' },
   { href: '/relatorio', icon: Bell, label: 'Relatório Semanal', color: 'text-slate-400' },
 ];
 
@@ -35,7 +39,18 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const { alerts, lifeScore } = useAppStore();
   const { user, logout } = useAuthStore();
+  const { notifications: coupleNotifs } = useCoupleStore();
+  const { pendingTransactions } = useBankNotificationStore();
   const unreadAlerts = alerts.filter((a) => !a.read).length;
+  const unreadCouple = coupleNotifs.filter((n) => !n.read).length;
+  const pendingBankCount = pendingTransactions.length;
+
+  const getBadge = (href: string) => {
+    if (href === '/') return unreadAlerts > 0 ? unreadAlerts : null;
+    if (href === '/casal') return unreadCouple > 0 ? unreadCouple : null;
+    if (href === '/notificacoes') return pendingBankCount > 0 ? pendingBankCount : null;
+    return null;
+  };
 
   const content = (
     <aside className="h-full w-60 bg-slate-900 border-r border-slate-800 flex flex-col">
@@ -101,11 +116,16 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
             >
               <item.icon size={16} className={isActive ? item.color : 'text-slate-500 group-hover:text-slate-300'} />
               <span className="flex-1 font-medium">{item.label}</span>
-              {item.href === '/' && unreadAlerts > 0 && (
-                <span className="w-5 h-5 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold">
-                  {unreadAlerts > 9 ? '9+' : unreadAlerts}
-                </span>
-              )}
+              {(() => {
+                const badge = getBadge(item.href);
+                if (!badge) return null;
+                const color = item.href === '/casal' ? 'bg-pink-500' : item.href === '/notificacoes' ? 'bg-amber-500' : 'bg-red-500';
+                return (
+                  <span className={`w-5 h-5 ${color} rounded-full text-[10px] text-white flex items-center justify-center font-bold`}>
+                    {badge > 9 ? '9+' : badge}
+                  </span>
+                );
+              })()}
               {isActive && <ChevronRight size={12} className="text-blue-400" />}
             </Link>
           );

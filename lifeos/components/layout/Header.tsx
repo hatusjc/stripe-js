@@ -17,6 +17,8 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/decisoes': { title: 'Decisões', subtitle: 'Histórico e análise de decisões' },
   '/ia': { title: 'LifeOS AI', subtitle: 'Seu assistente inteligente' },
   '/relatorio': { title: 'Relatório Semanal', subtitle: 'Resumo executivo da semana' },
+  '/casal': { title: 'Casal', subtitle: 'Espaço compartilhado com seu cônjuge' },
+  '/notificacoes': { title: 'Notificações Bancárias', subtitle: 'Captura automática de transações' },
 };
 
 interface HeaderProps {
