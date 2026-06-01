@@ -19,6 +19,10 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/relatorio': { title: 'Relatório Semanal', subtitle: 'Resumo executivo da semana' },
   '/casal': { title: 'Casal', subtitle: 'Espaço compartilhado com seu cônjuge' },
   '/notificacoes': { title: 'Notificações Bancárias', subtitle: 'Captura automática de transações' },
+  '/orcamento': { title: 'Orçamento', subtitle: 'Controle de gastos por categoria' },
+  '/cenarios': { title: 'Cenários "E se?"', subtitle: 'Simulador de decisões financeiras' },
+  '/checkin': { title: 'Check-in Semanal', subtitle: 'Reflexão e atualização do Life Score' },
+  '/openfinance': { title: 'Open Finance', subtitle: 'Conexão com instituições bancárias' },
 };
 
 interface HeaderProps {

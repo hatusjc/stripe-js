@@ -10,12 +10,15 @@ import { useBankNotificationStore } from '@/lib/store/bankNotificationStore';
 import {
   LayoutDashboard, DollarSign, FolderKanban, Target, Shield,
   BookOpen, Users, Brain, HeartPulse, Zap, Building2,
-  Bell, ChevronRight, Star, LogOut, X, Heart, Smartphone
+  Bell, ChevronRight, Star, LogOut, X, Heart, Smartphone,
+  PiggyBank, TrendingUp, CalendarCheck, Landmark,
 } from 'lucide-react';
 
 const navItems = [
   { href: '/', icon: LayoutDashboard, label: 'Dashboard', color: 'text-blue-400' },
   { href: '/financas', icon: DollarSign, label: 'Finanças', color: 'text-emerald-400' },
+  { href: '/orcamento', icon: PiggyBank, label: 'Orçamento', color: 'text-emerald-300' },
+  { href: '/cenarios', icon: TrendingUp, label: 'Cenários "E se?"', color: 'text-teal-400' },
   { href: '/projetos', icon: FolderKanban, label: 'Projetos', color: 'text-purple-400' },
   { href: '/objetivos', icon: Target, label: 'Objetivos', color: 'text-orange-400' },
   { href: '/responsabilidades', icon: Shield, label: 'Responsabilidades', color: 'text-red-400' },
@@ -25,8 +28,10 @@ const navItems = [
   { href: '/conhecimento', icon: BookOpen, label: 'Conhecimento', color: 'text-cyan-400' },
   { href: '/decisoes', icon: Brain, label: 'Decisões', color: 'text-violet-400' },
   { href: '/ia', icon: Zap, label: 'LifeOS AI', color: 'text-amber-400' },
+  { href: '/checkin', icon: CalendarCheck, label: 'Check-in Semanal', color: 'text-indigo-400' },
   { href: '/casal', icon: Heart, label: 'Casal', color: 'text-pink-400' },
   { href: '/notificacoes', icon: Smartphone, label: 'Notif. Bancárias', color: 'text-blue-400' },
+  { href: '/openfinance', icon: Landmark, label: 'Open Finance', color: 'text-sky-400' },
   { href: '/relatorio', icon: Bell, label: 'Relatório Semanal', color: 'text-slate-400' },
 ];
 
