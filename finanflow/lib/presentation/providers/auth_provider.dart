@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/datasources/local/database_helper.dart';
 import '../../data/repositories/user_repository_impl.dart';
@@ -51,6 +52,15 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
   Future<AuthState> build() async {
     final encryption = ref.read(encryptionServiceProvider);
     await encryption.initialize();
+
+    if (kIsWeb) {
+      // On web: auto-authenticate with onboarding complete for demo
+      return const AuthState(
+        isAuthenticated: true,
+        onboardingComplete: true,
+        userId: 'web-demo',
+      );
+    }
 
     final userRepo = UserRepositoryImpl(DatabaseHelper.instance);
     final userResult = await userRepo.getCurrentUser();
