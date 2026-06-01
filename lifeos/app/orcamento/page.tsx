@@ -97,8 +97,8 @@ export default function OrcamentoPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-xl font-bold text-white">Orçamento por Categoria</h2>
           <p className="text-slate-400 text-sm mt-0.5">Controle seus gastos mensais por área</p>
@@ -121,7 +121,7 @@ export default function OrcamentoPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
           <p className="text-slate-500 text-xs uppercase tracking-wider">Total Orçado</p>
           <p className="text-2xl font-bold text-white mt-1">{formatCurrency(totalBudget)}</p>
@@ -161,7 +161,7 @@ export default function OrcamentoPage() {
       )}
 
       {/* Chart */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp size={16} className="text-blue-400" />
           <h3 className="text-sm font-semibold text-white">Gasto vs Orçamento</h3>

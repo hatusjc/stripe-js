@@ -25,11 +25,11 @@ export function Card({ className, children, onClick, hover }: CardProps) {
 }
 
 export function CardHeader({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn('p-4 pb-2', className)}>{children}</div>;
+  return <div className={cn('p-3 pb-2 sm:p-4 sm:pb-2', className)}>{children}</div>;
 }
 
 export function CardContent({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cn('px-4 pb-4', className)}>{children}</div>;
+  return <div className={cn('px-3 pb-3 sm:px-4 sm:pb-4', className)}>{children}</div>;
 }
 
 export function CardTitle({ className, children }: { className?: string; children: ReactNode }) {

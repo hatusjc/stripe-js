@@ -46,13 +46,13 @@ export function FinancasPage() {
   const recentTransactions = transactions.slice(0, 8);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Finanças</h2>
           <p className="text-sm text-slate-400">Gestão financeira completa</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <Button variant="secondary" icon={<Upload size={14} />} onClick={() => setShowCSVImport(true)}>Importar CSV</Button>
           <Button variant="primary" icon={<Plus size={14} />}>Nova Transação</Button>
         </div>
@@ -60,16 +60,16 @@ export function FinancasPage() {
       {showCSVImport && <CSVImport onClose={() => setShowCSVImport(false)} />}
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard title="Patrimônio Líquido" value={formatCurrency(netWorth)} subtitle="Ativos - Dívidas" icon={<DollarSign size={16} className="text-emerald-400" />} iconBg="bg-emerald-500/15" valueColor="text-emerald-400" trend={5.2} />
         <StatCard title="Receita do Mês" value={formatCurrency(income)} subtitle="Todos os recebimentos" icon={<TrendingUp size={16} className="text-blue-400" />} iconBg="bg-blue-500/15" valueColor="text-blue-400" />
         <StatCard title="Despesas do Mês" value={formatCurrency(expenses)} subtitle="Todos os gastos" icon={<TrendingDown size={16} className="text-rose-400" />} iconBg="bg-rose-500/15" valueColor="text-rose-400" />
         <StatCard title="Taxa de Poupança" value={`${savingsRate.toFixed(1)}%`} subtitle={formatCurrency(savings) + ' economizados'} icon={<PiggyBank size={16} className="text-amber-400" />} iconBg="bg-amber-500/15" valueColor={savingsRate >= 20 ? 'text-emerald-400' : savingsRate >= 10 ? 'text-amber-400' : 'text-red-400'} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Charts */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 lg:space-y-6">
           {/* Expense Breakdown */}
           <Card>
             <CardHeader className="flex-row items-center justify-between">
@@ -137,7 +137,7 @@ export function FinancasPage() {
         </div>
 
         {/* Right */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-6">
           {/* Accounts */}
           <Card>
             <CardHeader>

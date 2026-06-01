@@ -60,33 +60,33 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Welcome bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h2 className="text-2xl font-bold text-white">Bom dia! 👋</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Bom dia! 👋</h2>
           <p className="text-slate-400 text-sm mt-0.5">
             {overdueTasks.length > 0
               ? `Você tem ${overdueTasks.length} item(s) atrasado(s) e ${unreadAlerts.length} alertas`
               : 'Tudo sob controle. Aqui está seu resumo do dia.'}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           {overdueTasks.length > 0 && (
-            <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-1.5">
-              <AlertTriangle size={14} className="text-red-400" />
+            <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/30 rounded-lg px-2.5 py-1.5">
+              <AlertTriangle size={12} className="text-red-400" />
               <span className="text-xs text-red-400 font-medium">{overdueTasks.length} atrasado(s)</span>
             </div>
           )}
-          <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-1.5">
-            <Flame size={14} className="text-orange-400" />
+          <div className="flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/30 rounded-lg px-2.5 py-1.5">
+            <Flame size={12} className="text-orange-400" />
             <span className="text-xs text-slate-300 font-medium">{todayTasks.length} para hoje</span>
           </div>
         </div>
       </div>
 
       {/* KPI Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <StatCard
           title="Saldo Total"
           value={formatCurrency(totalBalance)}
@@ -125,9 +125,9 @@ export function Dashboard() {
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Left - Cash Flow Chart + Alerts */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 lg:space-y-6">
           {/* Cash Flow Chart */}
           <Card>
             <CardHeader className="flex-row items-center justify-between pb-4">
@@ -164,7 +164,7 @@ export function Dashboard() {
           </Card>
 
           {/* Projects + Tasks Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
             {/* Active Projects */}
             <Card>
               <CardHeader className="flex-row items-center justify-between">
@@ -236,7 +236,7 @@ export function Dashboard() {
         </div>
 
         {/* Right Column */}
-        <div className="space-y-6">
+        <div className="space-y-4 lg:space-y-6">
           {/* Life Score Radar */}
           <Card>
             <CardHeader className="flex-row items-center justify-between">
@@ -351,7 +351,7 @@ export function Dashboard() {
             Ver todos <ArrowRight size={12} />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {activeGoals.map((goal) => (
             <Card key={goal.id} hover>
               <CardContent className="pt-4">
@@ -385,7 +385,7 @@ export function Dashboard() {
             Ver todas <ArrowRight size={12} />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {responsibilities.slice(0, 4).map((r) => (
             <Card key={r.id} hover>
               <CardContent className="pt-4">

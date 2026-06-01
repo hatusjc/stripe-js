@@ -31,8 +31,8 @@ export default function SaudePage() {
   const { healthMetrics, healthGoals, lifeScore } = useAppStore();
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Saúde</h2>
           <p className="text-sm text-slate-400">Saúde física e mental</p>
@@ -41,7 +41,7 @@ export default function SaudePage() {
       </div>
 
       {/* Health Score */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className={cn('border rounded-xl p-4 text-center', getScoreBg(lifeScore.saude))}>
           <p className="text-xs text-slate-400">Score de Saúde</p>
           <p className={cn('text-3xl font-bold mt-1', getScoreColor(lifeScore.saude))}>{lifeScore.saude}</p>
@@ -62,7 +62,7 @@ export default function SaudePage() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Weight Chart */}
         <Card>
           <CardHeader><CardTitle>Evolução do Peso</CardTitle></CardHeader>

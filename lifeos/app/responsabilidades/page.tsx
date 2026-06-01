@@ -16,8 +16,8 @@ export default function ResponsabilidadesPage() {
     : 0;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Responsabilidades</h2>
           <p className="text-sm text-slate-400">Seus compromissos permanentes</p>
@@ -25,17 +25,17 @@ export default function ResponsabilidadesPage() {
         <Button variant="primary" icon={<Plus size={14} />}>Nova Responsabilidade</Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-slate-200">{responsibilities.length}</p>
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className="text-xl sm:text-2xl font-bold text-slate-200">{responsibilities.length}</p>
           <p className="text-xs text-slate-400 mt-1">Total</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className={cn('text-2xl font-bold', getScoreColor(avgHealth))}>{avgHealth}</p>
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className={cn('text-xl sm:text-2xl font-bold', getScoreColor(avgHealth))}>{avgHealth}</p>
           <p className="text-xs text-slate-400 mt-1">Saúde Média</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-red-400">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className="text-xl sm:text-2xl font-bold text-red-400">
             {responsibilities.filter((r) => r.healthScore < 60).length}
           </p>
           <p className="text-xs text-slate-400 mt-1">Precisam de Atenção</p>

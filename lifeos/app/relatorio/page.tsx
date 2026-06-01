@@ -51,19 +51,19 @@ export default function RelatorioPage() {
   ].sort((a, b) => a.score - b.score);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Actions */}
-      <div className="flex items-center justify-between print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2 print:hidden">
         <div>
           <h2 className="text-lg font-bold text-white">Relatório Semanal</h2>
           <p className="text-sm text-slate-400">{formatWeekDate(weekStart)} — {formatWeekDate(weekEnd)}</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all"
+            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition-all"
           >
-            <Printer size={14} /> Imprimir
+            <Printer size={14} /> <span className="hidden sm:inline">Imprimir</span>
           </button>
           <ExportButton
             label="Baixar PDF"
@@ -82,9 +82,9 @@ export default function RelatorioPage() {
       </div>
 
       {/* Report content */}
-      <div className="space-y-6 print:space-y-4" id="report-content">
+      <div className="space-y-4 lg:space-y-6 print:space-y-4" id="report-content">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/20 rounded-2xl p-6 print:bg-transparent print:border-2 print:border-slate-200">
+        <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/20 rounded-2xl p-4 sm:p-6 print:bg-transparent print:border-2 print:border-slate-200">
           <div className="flex items-start justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -120,24 +120,24 @@ export default function RelatorioPage() {
         )}
 
         {/* KPIs Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {[
             { label: 'Saldo Total', value: formatCurrency(balance), icon: TrendingUp, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
             { label: 'Receita do Mês', value: formatCurrency(income), icon: TrendingUp, color: 'text-blue-400', bg: 'bg-blue-500/10' },
             { label: 'Despesas', value: formatCurrency(expenses), icon: TrendingDown, color: 'text-rose-400', bg: 'bg-rose-500/10' },
             { label: 'Taxa de Poupança', value: `${savingsRate.toFixed(1)}%`, icon: Target, color: savingsRate >= 20 ? 'text-emerald-400' : 'text-amber-400', bg: savingsRate >= 20 ? 'bg-emerald-500/10' : 'bg-amber-500/10' },
           ].map((kpi) => (
-            <div key={kpi.label} className={cn('rounded-xl p-4 border border-slate-700/50', kpi.bg)}>
-              <p className="text-xs text-slate-400 mb-1">{kpi.label}</p>
-              <p className={cn('text-xl font-bold', kpi.color)}>{kpi.value}</p>
+            <div key={kpi.label} className={cn('rounded-xl p-3 sm:p-4 border border-slate-700/50', kpi.bg)}>
+              <p className="text-xs text-slate-400 mb-1 truncate">{kpi.label}</p>
+              <p className={cn('text-lg sm:text-xl font-bold', kpi.color)}>{kpi.value}</p>
             </div>
           ))}
         </div>
 
         {/* Main sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Life Score por área */}
-          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-5">
+          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
             <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <Star size={14} className="text-amber-400" />
               Life Score por Área
@@ -162,7 +162,7 @@ export default function RelatorioPage() {
           </div>
 
           {/* Execução */}
-          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-5">
+          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
             <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <CheckCircle2 size={14} className="text-blue-400" />
               Execução da Semana
@@ -197,7 +197,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Objetivos */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-5">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Target size={14} className="text-orange-400" />
             Status dos Objetivos
@@ -217,7 +217,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Responsabilidades */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-5">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Shield size={14} className="text-red-400" />
             Saúde das Responsabilidades
@@ -234,7 +234,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Patrimônio */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-5">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-3">Resumo Patrimonial</p>
           <div className="grid grid-cols-3 gap-3">
             <div>

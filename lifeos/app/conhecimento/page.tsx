@@ -43,8 +43,8 @@ export default function ConhecimentoPage() {
   const categories = [...new Set(notes.map((n) => n.category))];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Conhecimento</h2>
           <p className="text-sm text-slate-400">{notes.length} anotações · {categories.length} categorias</p>
@@ -53,7 +53,7 @@ export default function ConhecimentoPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         {Object.entries(TYPE_LABELS).slice(0, 4).map(([type, label]) => {
           const count = notes.filter((n) => n.type === type).length;
           return (
@@ -70,7 +70,7 @@ export default function ConhecimentoPage() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* List */}
         <div className="space-y-3">
           <div className="relative">

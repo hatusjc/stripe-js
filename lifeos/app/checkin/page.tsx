@@ -85,8 +85,8 @@ export default function CheckinPage() {
         {history.length === 0 ? (
           <div className="text-center py-20 text-slate-500">Nenhum check-in realizado ainda.</div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
               <h3 className="text-sm font-semibold text-white mb-4">Evolução do Life Score</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={trendData}>
@@ -99,7 +99,7 @@ export default function CheckinPage() {
               </ResponsiveContainer>
             </div>
             {radarData.length > 0 && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
                 <h3 className="text-sm font-semibold text-white mb-4">Perfil Último Check-in</h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <RadarChart data={radarData}>
@@ -159,7 +159,7 @@ export default function CheckinPage() {
       </div>
 
       {step === 'start' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-6">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-8 text-center space-y-5 sm:space-y-6">
           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto">
             <Star size={28} className="text-white" />
           </div>
@@ -188,7 +188,7 @@ export default function CheckinPage() {
       )}
 
       {step === 'questions' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="flex items-center justify-between">
             <span className="text-xs text-slate-500">{qIndex + 1} de {CHECKIN_QUESTIONS.length}</span>
             <div className="flex gap-1">
@@ -235,7 +235,7 @@ export default function CheckinPage() {
       )}
 
       {step === 'finish' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5">
           <h3 className="text-white font-semibold">Quase lá! Reflexões finais</h3>
           <div>
             <label className="text-xs text-slate-400 mb-1 block">Maior conquista ou destaque da semana</label>
@@ -256,7 +256,7 @@ export default function CheckinPage() {
       )}
 
       {step === 'done' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-8 text-center space-y-4">
           <CheckCircle2 size={48} className="text-emerald-400 mx-auto" />
           <h3 className="text-xl font-bold text-white">Check-in Salvo!</h3>
           <p className="text-slate-400 text-sm">Seu Life Score foi atualizado com base nas suas respostas.</p>

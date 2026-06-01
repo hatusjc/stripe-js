@@ -44,8 +44,8 @@ export default function PatrimonioPage() {
   }, {});
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Patrimônio</h2>
           <p className="text-sm text-slate-400">Seus ativos e investimentos</p>
@@ -53,7 +53,7 @@ export default function PatrimonioPage() {
         <Button variant="primary" icon={<Plus size={14} />}>Novo Ativo</Button>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
           <p className="text-xs text-slate-400">Patrimônio Líquido</p>
           <p className="text-xl font-bold text-emerald-400 mt-1">{formatCurrency(netWorth)}</p>
@@ -77,8 +77,8 @@ export default function PatrimonioPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+        <div className="lg:col-span-2 space-y-4 lg:space-y-6">
           <Card>
             <CardHeader><CardTitle>Distribuição por Ativo</CardTitle></CardHeader>
             <CardContent>

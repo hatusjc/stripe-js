@@ -206,9 +206,9 @@ export default function CenariosPage() {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Parameters */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4">
           <div className="flex items-center gap-2 mb-2">
             <Calculator size={16} className="text-blue-400" />
             <h3 className="text-sm font-semibold text-white">Parâmetros</h3>
@@ -290,7 +290,7 @@ export default function CenariosPage() {
 
         {/* Chart + results */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Projeção Comparativa</h3>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={result.months}>
@@ -308,7 +308,7 @@ export default function CenariosPage() {
             </ResponsiveContainer>
           </div>
 
-          <div className={`rounded-xl border p-5 ${result.impact === 'positive' ? 'bg-emerald-500/10 border-emerald-500/30' : result.impact === 'negative' ? 'bg-red-500/10 border-red-500/30' : 'bg-blue-500/10 border-blue-500/30'}`}>
+          <div className={`rounded-xl border p-4 sm:p-5 ${result.impact === 'positive' ? 'bg-emerald-500/10 border-emerald-500/30' : result.impact === 'negative' ? 'bg-red-500/10 border-red-500/30' : 'bg-blue-500/10 border-blue-500/30'}`}>
             <div className="flex items-center gap-2 mb-3">
               {result.impact === 'positive' ? <TrendingUp size={16} className="text-emerald-400" /> : result.impact === 'negative' ? <TrendingDown size={16} className="text-red-400" /> : <PiggyBank size={16} className="text-blue-400" />}
               <h3 className="text-sm font-semibold text-white">Resultado do Cenário</h3>

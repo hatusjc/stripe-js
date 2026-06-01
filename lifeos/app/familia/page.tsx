@@ -34,20 +34,20 @@ export default function FamiliaPage() {
     .slice(0, 3);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Família</h2>
           <p className="text-sm text-slate-400">{familyMembers.length} membros · {upcoming.length} eventos futuros</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 shrink-0">
           <Button variant="secondary" icon={<Plus size={14} />}>Evento</Button>
           <Button variant="primary" icon={<Plus size={14} />}>Membro</Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+        <div className="lg:col-span-2 space-y-4 lg:space-y-6">
           {/* Upcoming Events */}
           <Card>
             <CardHeader>

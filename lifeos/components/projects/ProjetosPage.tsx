@@ -42,8 +42,8 @@ export function ProjetosPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Projetos</h2>
           <p className="text-sm text-slate-400">{stats.active} ativos · {stats.risk} em risco</p>
@@ -52,16 +52,16 @@ export function ProjetosPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-2 sm:gap-4">
         {[
           { label: 'Total', value: stats.total, color: 'text-slate-300' },
-          { label: 'Em Andamento', value: stats.active, color: 'text-blue-400' },
+          { label: 'Ativos', value: stats.active, color: 'text-blue-400' },
           { label: 'Em Risco', value: stats.risk, color: 'text-red-400' },
           { label: 'Concluídos', value: stats.done, color: 'text-emerald-400' },
         ].map((s) => (
-          <div key={s.label} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-            <p className={cn('text-2xl font-bold', s.color)}>{s.value}</p>
-            <p className="text-xs text-slate-400 mt-1">{s.label}</p>
+          <div key={s.label} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-2.5 sm:p-4 text-center">
+            <p className={cn('text-xl sm:text-2xl font-bold', s.color)}>{s.value}</p>
+            <p className="text-[10px] sm:text-xs text-slate-400 mt-1 truncate">{s.label}</p>
           </div>
         ))}
       </div>

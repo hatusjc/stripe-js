@@ -158,15 +158,15 @@ function PlanosContent() {
 
         {/* ===== TRIAL CTA (primary) ===== */}
         {!isPremium() && (
-          <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-3xl p-8 md:p-12 text-center space-y-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto">
-              <Crown size={28} className="text-white" />
+          <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-3xl p-5 sm:p-8 md:p-12 text-center space-y-5 sm:space-y-6">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto">
+              <Crown size={24} className="text-white" />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-white mb-2">Teste Premium por 15 dias</h2>
-              <p className="text-slate-300 text-lg">Completamente grátis. Sem cartão de crédito. Cancele quando quiser.</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">Teste Premium por 15 dias</h2>
+              <p className="text-slate-300 text-sm sm:text-lg">Completamente grátis. Sem cartão de crédito. Cancele quando quiser.</p>
             </div>
-            <div className="flex items-center justify-center gap-6 text-sm text-slate-400">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm text-slate-400">
               {['Todos os recursos Premium', 'Sem compromisso', 'Cancele a qualquer momento'].map((t) => (
                 <div key={t} className="flex items-center gap-1.5"><Check size={14} className="text-emerald-400" />{t}</div>
               ))}

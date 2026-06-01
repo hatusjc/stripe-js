@@ -18,8 +18,8 @@ export default function ObjetivosPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="text-lg font-bold text-white">Objetivos</h2>
           <p className="text-sm text-slate-400">{activeGoals.length} metas ativas</p>
@@ -27,17 +27,17 @@ export default function ObjetivosPage() {
         <Button variant="primary" icon={<Plus size={14} />}>Nova Meta</Button>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-blue-400">{activeGoals.length}</p>
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className="text-xl sm:text-2xl font-bold text-blue-400">{activeGoals.length}</p>
           <p className="text-xs text-slate-400 mt-1">Metas Ativas</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-emerald-400">{completedGoals.length}</p>
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className="text-xl sm:text-2xl font-bold text-emerald-400">{completedGoals.length}</p>
           <p className="text-xs text-slate-400 mt-1">Concluídas</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-amber-400">
+        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <p className="text-xl sm:text-2xl font-bold text-amber-400">
             {activeGoals.length > 0
               ? Math.round(activeGoals.reduce((s, g) => s + g.progress, 0) / activeGoals.length)
               : 0}%
