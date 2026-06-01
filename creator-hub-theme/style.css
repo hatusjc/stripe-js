@@ -1,0 +1,24 @@
+/*
+Theme Name: CreatorHub
+Theme URI: https://github.com/hatusjc/creator-hub
+Author: CreatorHub Team
+Author URI: https://creatorrhub.com
+Description: Tema WordPress profissional para plataformas de criadores de conteúdo. Compatível com Elementor, WooCommerce, Gutenberg e plugins de membership e assinatura. Design premium com Dark Mode nativo e sistema de cores globais.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: creator-hub
+Tags: one-column, two-columns, three-columns, left-sidebar, right-sidebar, flexible-header, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, full-width-template, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready, blog, e-commerce, entertainment
+*/
+
+/* =========================================================
+   CreatorHub Theme - Main Stylesheet
+   Version: 1.0.0
+   ========================================================= */
+
+/* As custom styles should be placed in assets/css/main.css.
+   This file is required by WordPress for theme identification.
+   See assets/css/variables.css for global CSS custom properties. */

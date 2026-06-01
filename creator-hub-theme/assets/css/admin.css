@@ -1,0 +1,14 @@
+/* =========================================================
+   CreatorHub - Admin Styles
+   ========================================================= */
+
+#adminmenu .toplevel_page_ch_creator .wp-menu-image::before { content: "\f307"; }
+
+.ch-meta-box { padding: 8px 0; }
+.ch-meta-box table.form-table th { font-size: 13px; font-weight: 600; }
+.ch-meta-box table.form-table input[type="text"],
+.ch-meta-box table.form-table input[type="url"],
+.ch-meta-box table.form-table input[type="number"],
+.ch-meta-box table.form-table textarea { border-radius: 4px; }
+
+.ch-admin-notice { background: #f0ebff; border-left: 4px solid #7c3aed; padding: 12px 16px; border-radius: 4px; }
