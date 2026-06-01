@@ -1,0 +1,140 @@
+name: finanflow
+description: Personal finance management app — offline, secure, premium.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+
+  # Navigation
+  go_router: ^14.2.0
+
+  # Database
+  sqflite: ^2.3.3+1
+  sqflite_common_ffi_web: ^1.0.1+1
+  path: ^1.9.0
+  path_provider: ^2.1.3
+
+  # Security
+  encrypt: ^5.0.3
+  local_auth: ^2.3.0
+  flutter_secure_storage: ^9.2.2
+  crypto: ^3.0.5
+
+  # Charts
+  fl_chart: ^0.68.0
+
+  # Calendar
+  table_calendar: ^3.1.2
+
+  # Export - PDF
+  pdf: ^3.11.0
+  printing: ^5.13.2
+
+  # Export - Excel
+  excel: ^4.0.2
+
+  # Export - CSV
+  csv: ^6.0.0
+
+  # File Operations
+  share_plus: ^12.0.2
+  open_filex: ^4.5.0
+  file_picker: ^8.1.3
+  permission_handler: ^11.3.1
+
+  # Local Notifications
+  flutter_local_notifications: ^17.2.3
+  timezone: ^0.9.4
+
+  # Animations
+  lottie: ^3.1.3
+  flutter_animate: ^4.5.0
+
+  # UI Components
+  flutter_slidable: ^3.1.1
+  shimmer: ^3.0.0
+  pinput: ^5.0.0
+  intl: ^0.20.0
+
+  # Privacy / Sensors
+  sensors_plus: ^5.0.0
+
+  # Bank statement import
+  xml: ^6.5.0
+
+  # OCR (v1.1)
+  google_mlkit_text_recognition: ^0.13.0
+  camera: ^0.11.0
+
+  # Cloud Backup (v1.1)
+  google_sign_in: ^6.2.1
+  googleapis: ^13.2.0
+
+  # Home Screen Widget (v1.1)
+  home_widget: ^0.7.0
+
+  # QR Code (v2.0)
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^5.2.3
+
+  # In-App Purchase (monetization)
+  in_app_purchase: ^3.2.0
+
+  # Utilities
+  uuid: ^4.4.2
+  equatable: ^2.0.5
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  collection: ^1.18.0
+  logger: ^2.4.0
+  app_links: ^6.3.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  riverpod_generator: ^2.4.3
+  freezed: ^2.5.7
+  json_serializable: ^6.8.0
+  mockito: ^5.4.4
+  mocktail: ^1.0.4
+  integration_test:
+    sdk: flutter
+  # Publication helpers (run generators after providing your icon image)
+  flutter_launcher_icons: ^0.14.1
+  flutter_native_splash: ^2.4.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/onboarding/
+    - assets/animations/lottie/
+    - assets/icons/
+    - assets/icons/categories/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter/Inter-Bold.ttf
+          weight: 700

@@ -1,0 +1,27 @@
+# flutter_launcher_icons configuration
+# Docs: https://pub.dev/packages/flutter_launcher_icons
+#
+# BEFORE RUNNING: place your 1024x1024 PNG icon at assets/icons/app_icon.png
+# Then run: flutter pub run flutter_launcher_icons
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+
+  # Path to your icon image (1024x1024 PNG, no transparency on Android adaptive)
+  image_path: "assets/icons/app_icon.png"
+
+  # Android adaptive icon (API 26+)
+  adaptive_icon_background: "#1E6B4C"   # AppColors.seed
+  adaptive_icon_foreground: "assets/icons/app_icon_foreground.png"
+
+  # iOS — no transparency, must fill the frame
+  remove_alpha_ios: true
+
+  # Web (optional)
+  web:
+    generate: false
+
+  # macOS (optional)
+  macos:
+    generate: false
