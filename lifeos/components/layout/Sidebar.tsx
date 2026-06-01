@@ -79,6 +79,24 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
         )}
       </div>
 
+      {/* Seja Premium CTA — top of menu */}
+      {plan === 'free' && (
+        <div className="px-3 pt-3">
+          <Link
+            href="/planos"
+            onClick={onMobileClose}
+            className="flex items-center gap-2.5 w-full px-3 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 rounded-xl transition-all group shadow-lg shadow-amber-500/20"
+          >
+            <Crown size={16} className="text-white shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold text-white">✨ Seja Premium</p>
+              <p className="text-[10px] text-amber-100/80">Teste grátis · 15 dias · sem cartão</p>
+            </div>
+            <ChevronRight size={13} className="text-white/60 group-hover:text-white transition-colors" />
+          </Link>
+        </div>
+      )}
+
       {/* Life Score */}
       <div className="px-4 py-3 border-b border-slate-800">
         <div className="bg-slate-800/80 rounded-lg p-3 flex items-center justify-between">
@@ -143,23 +161,8 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
         })}
       </nav>
 
-      {/* Plan CTA */}
-      {plan === 'free' ? (
-        <div className="px-3 pb-1">
-          <Link
-            href="/planos"
-            onClick={onMobileClose}
-            className="flex items-center gap-2 w-full px-3 py-2.5 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 hover:border-amber-500/40 rounded-xl transition-all group"
-          >
-            <Crown size={14} className="text-amber-400" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-amber-300">Upgrade Premium</p>
-              <p className="text-[10px] text-slate-500">R$29,90/mês</p>
-            </div>
-            <ChevronRight size={12} className="text-amber-500/50 group-hover:text-amber-400 transition-colors" />
-          </Link>
-        </div>
-      ) : (
+      {/* Plan CTA — bottom */}
+      {plan !== 'free' && (
         <div className="px-4 pb-1">
           <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 rounded-lg">
             <Crown size={11} className="text-amber-400" />

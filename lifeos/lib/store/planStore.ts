@@ -6,17 +6,18 @@ import { persist } from 'zustand/middleware';
 export type Plan = 'free' | 'premium';
 
 export interface PlanFeatures {
-  // Hard-locked to premium
   coupleSpace: boolean;
   offlinePWA: boolean;
   bankNotifications: boolean;
   openFinance: boolean;
-  // Soft limits (free has restricted version)
-  unlimitedBudgetCategories: boolean;  // free: up to 4
-  allScenarios: boolean;               // free: demissão + aumento only
-  unlimitedAI: boolean;                // free: 10 msgs/day
-  csvImport: boolean;                  // free: no
-  supabaseSync: boolean;               // free: localStorage only
+  unlimitedBudgetCategories: boolean;
+  allScenarios: boolean;
+  unlimitedAI: boolean;
+  aiCrud: boolean;
+  csvImport: boolean;
+  supabaseSync: boolean;
+  pdfExport: boolean;
+  pushNotifications: boolean;
 }
 
 const PLAN_FEATURES: Record<Plan, PlanFeatures> = {
@@ -28,8 +29,11 @@ const PLAN_FEATURES: Record<Plan, PlanFeatures> = {
     unlimitedBudgetCategories: false,
     allScenarios: false,
     unlimitedAI: false,
+    aiCrud: false,
     csvImport: false,
     supabaseSync: false,
+    pdfExport: false,
+    pushNotifications: false,
   },
   premium: {
     coupleSpace: true,
@@ -39,23 +43,33 @@ const PLAN_FEATURES: Record<Plan, PlanFeatures> = {
     unlimitedBudgetCategories: true,
     allScenarios: true,
     unlimitedAI: true,
+    aiCrud: true,
     csvImport: true,
     supabaseSync: true,
+    pdfExport: true,
+    pushNotifications: true,
   },
 };
+
+const TRIAL_DAYS = 15;
 
 interface PlanStore {
   plan: Plan;
   activatedAt: string | null;
   expiresAt: string | null;
+  isTrial: boolean;
   // Daily AI usage
   aiMessagesToday: number;
   aiUsageDate: string;
   // Actions
   upgradeToPremium: () => void;
+  startTrial: () => void;
   downgradeToFree: () => void;
+  checkExpiry: () => void;
   features: () => PlanFeatures;
   isPremium: () => boolean;
+  isTrialing: () => boolean;
+  daysLeftInTrial: () => number;
   canSendAI: () => boolean;
   trackAIMessage: () => void;
   aiRemaining: () => number;
@@ -69,6 +83,7 @@ export const usePlanStore = create<PlanStore>()(
       plan: 'free',
       activatedAt: null,
       expiresAt: null,
+      isTrial: false,
       aiMessagesToday: 0,
       aiUsageDate: '',
 
@@ -76,18 +91,33 @@ export const usePlanStore = create<PlanStore>()(
         const now = new Date();
         const expires = new Date(now);
         expires.setMonth(expires.getMonth() + 1);
-        set({
-          plan: 'premium',
-          activatedAt: now.toISOString(),
-          expiresAt: expires.toISOString(),
-        });
+        set({ plan: 'premium', activatedAt: now.toISOString(), expiresAt: expires.toISOString(), isTrial: false });
       },
 
-      downgradeToFree: () => set({
-        plan: 'free',
-        activatedAt: null,
-        expiresAt: null,
-      }),
+      startTrial: () => {
+        const now = new Date();
+        const expires = new Date(now);
+        expires.setDate(expires.getDate() + TRIAL_DAYS);
+        set({ plan: 'premium', activatedAt: now.toISOString(), expiresAt: expires.toISOString(), isTrial: true });
+      },
+
+      downgradeToFree: () => set({ plan: 'free', activatedAt: null, expiresAt: null, isTrial: false }),
+
+      checkExpiry: () => {
+        const { expiresAt, plan } = get();
+        if (plan === 'premium' && expiresAt && new Date(expiresAt) < new Date()) {
+          set({ plan: 'free', activatedAt: null, expiresAt: null, isTrial: false });
+        }
+      },
+
+      isTrialing: () => get().isTrial && get().plan === 'premium',
+
+      daysLeftInTrial: () => {
+        const { expiresAt, isTrial } = get();
+        if (!isTrial || !expiresAt) return 0;
+        const diff = new Date(expiresAt).getTime() - Date.now();
+        return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      },
 
       features: () => PLAN_FEATURES[get().plan],
 

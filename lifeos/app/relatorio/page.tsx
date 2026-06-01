@@ -6,6 +6,7 @@ import { useAppStore } from '@/lib/store/useAppStore';
 import { formatCurrency, getScoreColor, getScoreBg, cn } from '@/lib/utils';
 import { Printer, Download, Calendar, TrendingUp, TrendingDown, Target, Shield, AlertTriangle, CheckCircle2, Star } from 'lucide-react';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { ExportButton, generateReportPDF } from '@/components/pdf/ExportButton';
 
 export default function RelatorioPage() {
   const { getTotalBalance, getMonthlyIncome, getMonthlyExpenses, debts, accounts } = useFinanceStore();
@@ -62,9 +63,21 @@ export default function RelatorioPage() {
             onClick={() => window.print()}
             className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all"
           >
-            <Printer size={14} />
-            Imprimir PDF
+            <Printer size={14} /> Imprimir
           </button>
+          <ExportButton
+            label="Baixar PDF"
+            onExport={() => generateReportPDF({
+              lifeScore: lifeScore.total,
+              month: new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }),
+              income,
+              expenses,
+              savings,
+              projectsActive: activeProjects.length,
+              goalsAvgProgress: avgGoalProgress,
+              topAlerts: criticalAlerts.map((a) => a.title),
+            })}
+          />
         </div>
       </div>
 
