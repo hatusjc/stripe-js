@@ -35,3 +35,16 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
 }
+
+@media print {
+  body { background: white !important; color: black !important; }
+  .print\:hidden { display: none !important; }
+  aside, header { display: none !important; }
+  main { margin: 0 !important; padding: 0 !important; }
+  .bg-slate-800\/60, .bg-slate-800\/50, .bg-slate-700\/50 {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+  .text-white { color: #0f172a !important; }
+  .text-slate-300, .text-slate-400, .text-slate-500 { color: #475569 !important; }
+}

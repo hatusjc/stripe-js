@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store/useAppStore';
+import { useAuthStore } from '@/lib/store/useAuthStore';
 import {
   LayoutDashboard, DollarSign, FolderKanban, Target, Shield,
-  BookOpen, Users, Briefcase, Brain, HeartPulse, Zap, Building2,
-  Bell, Settings, ChevronRight, Star
+  BookOpen, Users, Brain, HeartPulse, Zap, Building2,
+  Bell, Settings, ChevronRight, Star, LogOut, X
 } from 'lucide-react';
 
 const navItems = [
@@ -22,17 +23,24 @@ const navItems = [
   { href: '/conhecimento', icon: BookOpen, label: 'Conhecimento', color: 'text-cyan-400' },
   { href: '/decisoes', icon: Brain, label: 'Decisões', color: 'text-violet-400' },
   { href: '/ia', icon: Zap, label: 'LifeOS AI', color: 'text-amber-400' },
+  { href: '/relatorio', icon: Bell, label: 'Relatório Semanal', color: 'text-slate-400' },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const { alerts, lifeScore } = useAppStore();
+  const { user, logout } = useAuthStore();
   const unreadAlerts = alerts.filter((a) => !a.read).length;
 
-  return (
-    <aside className="fixed left-0 top-0 h-screen w-60 bg-slate-900 border-r border-slate-800 flex flex-col z-40">
+  const content = (
+    <aside className="h-full w-60 bg-slate-900 border-r border-slate-800 flex flex-col">
       {/* Logo */}
-      <div className="px-5 py-5 border-b border-slate-800">
+      <div className="px-5 py-5 border-b border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <Zap size={16} className="text-white" />
@@ -42,6 +50,11 @@ export function Sidebar() {
             <p className="text-[10px] text-slate-500 -mt-0.5">Personal OS</p>
           </div>
         </div>
+        {onMobileClose && (
+          <button onClick={onMobileClose} className="lg:hidden text-slate-500 hover:text-slate-300">
+            <X size={18} />
+          </button>
+        )}
       </div>
 
       {/* Life Score */}
@@ -78,6 +91,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onMobileClose}
               className={cn(
                 'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group',
                 isActive
@@ -98,22 +112,46 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Bottom */}
+      {/* User + Logout */}
       <div className="px-3 py-3 border-t border-slate-800 space-y-1">
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-all">
-          <Bell size={16} />
-          <span>Alertas</span>
-          {unreadAlerts > 0 && (
-            <span className="ml-auto w-5 h-5 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold">
-              {unreadAlerts}
-            </span>
-          )}
-        </button>
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-all">
-          <Settings size={16} />
-          <span>Configurações</span>
+        {user && (
+          <div className="flex items-center gap-2.5 px-3 py-2 mb-1">
+            <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium text-slate-300 truncate">{user.name}</p>
+              <p className="text-[10px] text-slate-600 truncate">{user.email}</p>
+            </div>
+          </div>
+        )}
+        <button
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 transition-all"
+        >
+          <LogOut size={15} />
+          <span>Sair</span>
         </button>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop */}
+      <div className="hidden lg:block fixed left-0 top-0 h-screen w-60 z-40">
+        {content}
+      </div>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/60" onClick={onMobileClose} />
+          <div className="relative w-60 h-full">
+            {content}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

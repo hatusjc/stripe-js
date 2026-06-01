@@ -1,18 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useFinanceStore } from '@/lib/store/useFinanceStore';
 import { useProjectStore } from '@/lib/store/useProjectStore';
 import { useAppStore } from '@/lib/store/useAppStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
 import { formatCurrency, getScoreColor, cn } from '@/lib/utils';
-import { Zap, Send, Sparkles, TrendingUp, AlertTriangle, Target, Brain, RefreshCw } from 'lucide-react';
+import { Zap, Send, Sparkles, RefreshCw, RotateCcw, User } from 'lucide-react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  timestamp: Date;
+  streaming?: boolean;
 }
 
 const QUICK_QUESTIONS = [
@@ -20,109 +19,203 @@ const QUICK_QUESTIONS = [
   'Onde estou falhando?',
   'O que merece atenção imediata?',
   'Qual área está piorando?',
-  'Estou avançando em direção aos meus objetivos?',
+  'Estou avançando nos meus objetivos?',
   'Qual é meu próximo passo?',
+  'Analise minha situação financeira',
+  'Quais riscos devo gerenciar esta semana?',
 ];
 
-function generateInsight(question: string, financeData: ReturnType<typeof useFinanceStore.getState>, projectData: ReturnType<typeof useProjectStore.getState>, appData: ReturnType<typeof useAppStore.getState>): string {
-  const income = financeData.transactions.filter(t => t.type === 'receita').reduce((s, t) => s + t.amount, 0);
-  const expenses = financeData.transactions.filter(t => t.type === 'despesa').reduce((s, t) => s + t.amount, 0);
-  const balance = financeData.getTotalBalance();
-  const atRisk = projectData.projects.filter(p => p.status === 'em_risco').length;
-  const score = appData.lifeScore.total;
-  const weakArea = Object.entries({
-    Finanças: appData.lifeScore.financas,
-    Saúde: appData.lifeScore.saude,
-    Família: appData.lifeScore.familia,
-    Carreira: appData.lifeScore.carreira,
-    Patrimônio: appData.lifeScore.patrimonio,
-  }).sort(([, a], [, b]) => a - b)[0];
+function buildContext(
+  financeStore: ReturnType<typeof useFinanceStore.getState>,
+  projectStore: ReturnType<typeof useProjectStore.getState>,
+  appStore: ReturnType<typeof useAppStore.getState>
+): string {
+  const income = financeStore.getMonthlyIncome();
+  const expenses = financeStore.getMonthlyExpenses();
+  const balance = financeStore.getTotalBalance();
+  const totalDebt = financeStore.debts.reduce((s, d) => s + d.remainingAmount, 0);
 
-  const q = question.toLowerCase();
+  const activeGoals = appStore.goals.filter((g) => g.status === 'ativo');
+  const atRiskProjects = projectStore.projects.filter((p) => p.status === 'em_risco');
+  const criticalAlerts = appStore.alerts.filter((a) => a.severity === 'critical' && !a.read);
+  const overdueTasks = appStore.tasks.filter((t) => t.dueDate && new Date(t.dueDate) < new Date() && t.status !== 'concluido');
 
-  if (q.includes('como está') || q.includes('vida atualmente')) {
-    return `📊 **Resumo da Sua Vida Atual**\n\n**Life Score:** ${score}/100 — ${score >= 75 ? 'Excelente' : score >= 60 ? 'Bom' : 'Precisa de atenção'}\n\n**Finanças:** Saldo total de ${formatCurrency(balance)}. Receita mensal de ${formatCurrency(income)} com despesas de ${formatCurrency(expenses)}, gerando um fluxo positivo de ${formatCurrency(income - expenses)}.\n\n**Projetos:** ${projectData.projects.filter(p => p.status === 'em_andamento').length} em andamento, ${atRisk} em risco.\n\n**Objetivos:** ${appData.goals.filter(g => g.status === 'ativo').length} metas ativas com progresso médio de ${Math.round(appData.goals.reduce((s, g) => s + g.progress, 0) / Math.max(appData.goals.length, 1))}%.\n\n**Ponto de atenção:** Sua área mais fraca é ${weakArea[0]} (${weakArea[1]}/100). Recomendo focar esforços nessa área nos próximos 30 dias.`;
-  }
+  return `## DADOS DO USUÁRIO
 
-  if (q.includes('falhando') || q.includes('piorando')) {
-    return `⚠️ **Áreas que Precisam de Atenção**\n\n1. **${weakArea[0]}** (Score: ${weakArea[1]}/100) — Esta é sua área mais crítica atualmente.\n\n${atRisk > 0 ? `2. **Projetos em Risco** — Você tem ${atRisk} projeto(s) em risco: ${projectData.projects.filter(p => p.status === 'em_risco').map(p => p.title).join(', ')}.\n\n` : ''}3. **Responsabilidades com baixa saúde** — ${appData.responsibilities.filter(r => r.healthScore < 65).map(r => r.title).join(', ')}\n\n**Recomendação:** Priorize ação imediata em ${weakArea[0]}. Reserve 30 minutos hoje para criar um plano de melhoria específico.`;
-  }
+### Life Score: ${appStore.lifeScore.total}/100
+- Finanças: ${appStore.lifeScore.financas}/100
+- Saúde: ${appStore.lifeScore.saude}/100
+- Família: ${appStore.lifeScore.familia}/100
+- Carreira: ${appStore.lifeScore.carreira}/100
+- Patrimônio: ${appStore.lifeScore.patrimonio}/100
+- Organização: ${appStore.lifeScore.organizacao}/100
+- Metas: ${appStore.lifeScore.metas}/100
+- Execução: ${appStore.lifeScore.execucao}/100
 
-  if (q.includes('atenção imediata') || q.includes('urgente')) {
-    const unread = appData.alerts.filter(a => !a.read && a.severity === 'critical');
-    const overdueTasks = appData.tasks.filter(t => t.dueDate && new Date(t.dueDate) < new Date() && t.status !== 'concluido');
-    return `🚨 **Itens que Exigem Atenção Imediata**\n\n${unread.length > 0 ? `**Alertas Críticos:**\n${unread.map(a => `• ${a.title}: ${a.description}`).join('\n')}\n\n` : ''}${overdueTasks.length > 0 ? `**Tarefas Atrasadas (${overdueTasks.length}):**\n${overdueTasks.map(t => `• ${t.title}`).join('\n')}\n\n` : ''}${atRisk > 0 ? `**Projetos em Risco:**\n${projectData.projects.filter(p => p.status === 'em_risco').map(p => `• ${p.title} (${p.progress}% concluído)`).join('\n')}\n\n` : ''}${unread.length === 0 && overdueTasks.length === 0 && atRisk === 0 ? '✅ Nenhum item crítico detectado no momento. Continue mantendo o foco!' : ''}`;
-  }
+### Finanças
+- Saldo total: ${formatCurrency(balance)}
+- Receita mensal: ${formatCurrency(income)}
+- Despesas mensais: ${formatCurrency(expenses)}
+- Fluxo de caixa: ${formatCurrency(income - expenses)}
+- Total de dívidas: ${formatCurrency(totalDebt)}
+- Taxa de poupança: ${income > 0 ? ((income - expenses) / income * 100).toFixed(1) : 0}%
+- Contas: ${financeStore.accounts.map((a) => `${a.name} (${formatCurrency(a.balance)})`).join(', ')}
+- Dívidas: ${financeStore.debts.map((d) => `${d.creditor}: ${formatCurrency(d.remainingAmount)} a ${d.interestRate}% a.m.`).join(', ')}
 
-  if (q.includes('objetivos') || q.includes('avançando') || q.includes('metas')) {
-    const goals = appData.goals.filter(g => g.status === 'ativo');
-    const avgProgress = Math.round(goals.reduce((s, g) => s + g.progress, 0) / Math.max(goals.length, 1));
-    const onTrack = goals.filter(g => g.progress >= 40);
-    const lagging = goals.filter(g => g.progress < 40);
-    return `🎯 **Análise dos Seus Objetivos**\n\n**Progresso médio:** ${avgProgress}% em ${goals.length} metas ativas\n\n**No prazo (${onTrack.length}):**\n${onTrack.map(g => `✅ ${g.title} — ${g.progress}%`).join('\n')}\n\n${lagging.length > 0 ? `**Atrasados (${lagging.length}):**\n${lagging.map(g => `⚠️ ${g.title} — ${g.progress}%`).join('\n')}\n\n` : ''}**Recomendação:** ${lagging.length > 0 ? `Priorize "${lagging[0].title}" — está abaixo do esperado. Revise suas ações e considere ajustar o prazo ou aumentar a intensidade.` : 'Continue no ritmo! Seus objetivos estão evoluindo bem.'}`;
-  }
+### Metas Financeiras
+${financeStore.goals.map((g) => `- ${g.title}: ${formatCurrency(g.currentAmount)} de ${formatCurrency(g.targetAmount)} (${Math.round(g.currentAmount / g.targetAmount * 100)}%)`).join('\n')}
 
-  if (q.includes('próximo passo') || q.includes('fazer')) {
-    const topTasks = appData.tasks.filter(t => t.status !== 'concluido' && t.priority === 'critica').slice(0, 3);
-    const riskProjects = projectData.projects.filter(p => p.status === 'em_risco');
-    return `🚀 **Seu Próximo Passo Estratégico**\n\nBaseado na análise da sua situação atual:\n\n**Ação Imediata (hoje):**\n${topTasks.length > 0 ? topTasks.map(t => `• ${t.title}`).join('\n') : '• Revise suas tarefas prioritárias'}\n\n**Esta semana:**\n${riskProjects.length > 0 ? `• Agendar revisão dos projetos em risco: ${riskProjects.map(p => p.title).join(', ')}\n` : ''}• Registrar pelo menos 3 métricas de saúde\n• Revisar orçamento do mês\n\n**Este mês:**\n• Focar em melhorar a área "${weakArea[0]}" (score atual: ${weakArea[1]})\n• Agendar revisão estratégica de todos os objetivos\n\n💡 **Insight:** Sua maior oportunidade de crescimento está em ${weakArea[0]}.`;
-  }
+### Projetos (${projectStore.projects.length} total)
+${projectStore.projects.map((p) => `- ${p.title}: ${p.status} | ${p.progress}% | Área: ${p.area} | Prioridade: ${p.priority}`).join('\n')}
 
-  return `🤖 **LifeOS AI**\n\nAnalisei seus dados e posso ver que você está gerenciando múltiplas frentes com um Life Score de **${score}/100**.\n\nSeu saldo atual é de ${formatCurrency(balance)}, com ${projectData.projects.filter(p => p.status === 'em_andamento').length} projetos ativos e ${appData.goals.filter(g => g.status === 'ativo').length} objetivos em andamento.\n\nPara uma análise mais específica, tente perguntar:\n• "Como está minha vida atualmente?"\n• "Onde estou falhando?"\n• "Qual é meu próximo passo?"`;
+### Projetos em Risco: ${atRiskProjects.length}
+${atRiskProjects.map((p) => `- ${p.title}`).join('\n') || 'Nenhum'}
+
+### Objetivos Ativos (${activeGoals.length})
+${activeGoals.map((g) => `- ${g.title}: ${g.progress}% | ${g.area} | Prazo: ${g.targetDate}`).join('\n')}
+
+### Responsabilidades (${appStore.responsibilities.length})
+${appStore.responsibilities.map((r) => `- ${r.title}: saúde ${r.healthScore}/100 | prioridade: ${r.priority}`).join('\n')}
+
+### Alertas Críticos: ${criticalAlerts.length}
+${criticalAlerts.map((a) => `- ${a.title}: ${a.description}`).join('\n') || 'Nenhum'}
+
+### Tarefas Atrasadas: ${overdueTasks.length}
+${overdueTasks.map((t) => `- ${t.title}`).join('\n') || 'Nenhuma'}
+
+### Família
+- Membros: ${appStore.familyMembers.map((m) => m.name + ' (' + m.relationship + ')').join(', ')}
+- Próximos eventos: ${appStore.familyEvents.slice(0, 3).map((e) => `${e.title} em ${e.date}`).join(', ')}
+
+### Patrimônio
+${appStore.assets.map((a) => `- ${a.name}: ${formatCurrency(a.currentValue)} (${a.type})`).join('\n')}
+
+### Saúde — últimas métricas
+${appStore.healthMetrics.slice(0, 4).map((m) => `- ${m.type}: ${m.value} ${m.unit}`).join('\n')}`;
 }
 
 export default function IAPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '👋 Olá! Sou a **LifeOS AI**, sua assistente inteligente pessoal.\n\nTenho acesso a todos os seus dados — finanças, projetos, objetivos, responsabilidades e saúde — e posso ajudá-lo a entender sua situação atual e tomar melhores decisões.\n\nO que você gostaria de saber hoje?',
-      timestamp: new Date(),
+      content: '👋 Olá! Sou a **LifeOS AI**, alimentada pelo Claude.\n\nTenho acesso completo aos seus dados — finanças, projetos, objetivos, responsabilidades, família e saúde — e posso analisar sua situação em tempo real.\n\nO que você gostaria de saber hoje?',
     }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
   const financeStore = useFinanceStore();
   const projectStore = useProjectStore();
   const appStore = useAppStore();
 
-  const sendMessage = async (text: string) => {
-    if (!text.trim()) return;
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-    const userMsg: Message = { role: 'user', content: text, timestamp: new Date() };
-    setMessages((prev) => [...prev, userMsg]);
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || isLoading) return;
+
+    const context = buildContext(financeStore, projectStore, appStore);
+    const userMsg: Message = { role: 'user', content: text };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInput('');
     setIsLoading(true);
 
-    await new Promise((r) => setTimeout(r, 800 + Math.random() * 600));
+    const assistantIdx = updatedMessages.length;
+    setMessages((prev) => [...prev, { role: 'assistant', content: '', streaming: true }]);
 
-    const response = generateInsight(text, financeStore, projectStore, appStore);
-    const assistantMsg: Message = { role: 'assistant', content: response, timestamp: new Date() };
-    setMessages((prev) => [...prev, assistantMsg]);
-    setIsLoading(false);
+    abortRef.current = new AbortController();
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          context,
+          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+        }),
+        signal: abortRef.current.signal,
+      });
+
+      if (!res.ok || !res.body) {
+        throw new Error('Falha na resposta da API');
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        accumulated += decoder.decode(value, { stream: true });
+        setMessages((prev) =>
+          prev.map((m, i) => i === assistantIdx ? { ...m, content: accumulated, streaming: true } : m)
+        );
+      }
+
+      setMessages((prev) =>
+        prev.map((m, i) => i === assistantIdx ? { ...m, content: accumulated, streaming: false } : m)
+      );
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name !== 'AbortError') {
+        setMessages((prev) =>
+          prev.map((m, i) =>
+            i === assistantIdx ? { ...m, content: '⚠️ Não foi possível conectar à IA. Verifique se a chave `ANTHROPIC_API_KEY` está configurada no `.env.local`.', streaming: false } : m
+          )
+        );
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const formatContent = (text: string) => {
-    return text.split('\n').map((line, i) => {
-      if (line.startsWith('**') && line.endsWith('**')) {
-        return <p key={i} className="font-semibold text-white mt-3 mb-1">{line.replace(/\*\*/g, '')}</p>;
-      }
-      const formatted = line.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>');
-      return <p key={i} className="text-slate-300 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: formatted }} />;
+  const stopGeneration = () => {
+    abortRef.current?.abort();
+    setIsLoading(false);
+    setMessages((prev) => prev.map((m) => ({ ...m, streaming: false })));
+  };
+
+  const clearChat = () => {
+    setMessages([{
+      role: 'assistant',
+      content: '👋 Conversa reiniciada. Como posso ajudar?',
+    }]);
+  };
+
+  const renderContent = (text: string) => {
+    const lines = text.split('\n');
+    return lines.map((line, i) => {
+      if (line.startsWith('## ')) return <p key={i} className="font-bold text-white text-base mt-3 mb-1">{line.slice(3)}</p>;
+      if (line.startsWith('### ')) return <p key={i} className="font-semibold text-blue-300 text-sm mt-2 mb-0.5">{line.slice(4)}</p>;
+      if (line.startsWith('- ') || line.startsWith('• ')) return (
+        <p key={i} className="text-sm text-slate-300 pl-3 flex items-start gap-1.5">
+          <span className="text-blue-400 shrink-0 mt-1">·</span>
+          <span dangerouslySetInnerHTML={{ __html: line.slice(2).replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>') }} />
+        </p>
+      );
+      const html = line.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>');
+      return line ? <p key={i} className="text-sm text-slate-300 leading-relaxed" dangerouslySetInnerHTML={{ __html: html }} /> : <div key={i} className="h-1.5" />;
     });
   };
 
   return (
-    <div className="space-y-6 h-full flex flex-col">
+    <div className="space-y-4 h-full flex flex-col">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <Zap size={18} className="text-amber-400" />
             LifeOS AI
           </h2>
-          <p className="text-sm text-slate-400">Seu assistente inteligente pessoal</p>
+          <p className="text-sm text-slate-400">Powered by Claude · Análise em tempo real dos seus dados</p>
         </div>
         <div className="flex items-center gap-2">
+          <button onClick={clearChat} className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors px-3 py-1.5 bg-slate-800 rounded-lg">
+            <RotateCcw size={12} /> Limpar
+          </button>
           <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-3 py-1">
             <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
             <span className="text-xs text-emerald-400">Online</span>
@@ -130,22 +223,23 @@ export default function IAPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1">
-        {/* Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1">
+        {/* Quick questions + score */}
         <div className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles size={14} className="text-amber-400" />
+                <Sparkles size={13} className="text-amber-400" />
                 Perguntas Rápidas
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-1.5">
               {QUICK_QUESTIONS.map((q) => (
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className="w-full text-left text-xs text-slate-300 hover:text-white p-2.5 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg transition-all border border-slate-700/50 hover:border-slate-600"
+                  disabled={isLoading}
+                  className="w-full text-left text-xs text-slate-300 hover:text-white p-2 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg transition-all border border-slate-700/50 hover:border-slate-600 disabled:opacity-50"
                 >
                   {q}
                 </button>
@@ -153,12 +247,9 @@ export default function IAPage() {
             </CardContent>
           </Card>
 
-          {/* Life Score quick view */}
           <Card>
-            <CardHeader>
-              <CardTitle>Life Score Atual</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+            <CardHeader><CardTitle>Life Score</CardTitle></CardHeader>
+            <CardContent className="space-y-1.5">
               {Object.entries({
                 Finanças: appStore.lifeScore.financas,
                 Saúde: appStore.lifeScore.saude,
@@ -178,42 +269,43 @@ export default function IAPage() {
         {/* Chat */}
         <div className="lg:col-span-3 flex flex-col">
           <Card className="flex-1 flex flex-col">
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[500px]">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[520px]">
               {messages.map((msg, i) => (
-                <div key={i} className={cn('flex', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
+                <div key={i} className={cn('flex gap-2.5', msg.role === 'user' ? 'justify-end' : 'justify-start')}>
+                  {msg.role === 'assistant' && (
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shrink-0 mt-1">
+                      <Zap size={13} className="text-white" />
+                    </div>
+                  )}
                   <div className={cn(
-                    'max-w-[85%] rounded-xl p-3',
+                    'max-w-[88%] rounded-2xl px-4 py-3',
                     msg.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-800 border border-slate-700'
+                      ? 'bg-blue-600 text-white rounded-tr-sm'
+                      : 'bg-slate-800 border border-slate-700 rounded-tl-sm'
                   )}>
                     {msg.role === 'assistant' ? (
                       <div className="space-y-0.5">
-                        {formatContent(msg.content)}
+                        {renderContent(msg.content)}
+                        {msg.streaming && (
+                          <span className="inline-block w-1.5 h-4 bg-blue-400 animate-pulse ml-0.5 rounded-sm" />
+                        )}
                       </div>
                     ) : (
                       <p className="text-sm">{msg.content}</p>
                     )}
-                    <p className="text-[10px] mt-2 opacity-40">
-                      {msg.timestamp.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                    </p>
                   </div>
+                  {msg.role === 'user' && (
+                    <div className="w-7 h-7 rounded-full bg-slate-700 flex items-center justify-center shrink-0 mt-1">
+                      <User size={13} className="text-slate-400" />
+                    </div>
+                  )}
                 </div>
               ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-3">
-                    <div className="flex items-center gap-2">
-                      <RefreshCw size={14} className="text-blue-400 animate-spin" />
-                      <span className="text-xs text-slate-400">Analisando seus dados...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <div ref={messagesEndRef} />
             </div>
 
             <div className="p-4 border-t border-slate-800">
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <input
                   type="text"
                   value={input}
@@ -223,15 +315,28 @@ export default function IAPage() {
                   className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
                   disabled={isLoading}
                 />
-                <Button
-                  variant="primary"
-                  onClick={() => sendMessage(input)}
-                  disabled={!input.trim() || isLoading}
-                  icon={<Send size={14} />}
-                >
-                  Enviar
-                </Button>
+                {isLoading ? (
+                  <button
+                    onClick={stopGeneration}
+                    className="flex items-center gap-1.5 bg-red-600/80 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                  >
+                    <RefreshCw size={14} className="animate-spin" />
+                    <span className="hidden sm:block">Parar</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => sendMessage(input)}
+                    disabled={!input.trim()}
+                    className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+                  >
+                    <Send size={14} />
+                    <span className="hidden sm:block">Enviar</span>
+                  </button>
+                )}
               </div>
+              <p className="text-[10px] text-slate-600 mt-2 text-center">
+                Configure ANTHROPIC_API_KEY no .env.local para ativar a IA completa
+              </p>
             </div>
           </Card>
         </div>

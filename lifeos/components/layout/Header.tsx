@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { Bell, Search, Plus } from 'lucide-react';
+import { Bell, Search, Plus, Menu } from 'lucide-react';
 import { useAppStore } from '@/lib/store/useAppStore';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
@@ -16,9 +16,14 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/conhecimento': { title: 'Conhecimento', subtitle: 'Seu segundo cérebro' },
   '/decisoes': { title: 'Decisões', subtitle: 'Histórico e análise de decisões' },
   '/ia': { title: 'LifeOS AI', subtitle: 'Seu assistente inteligente' },
+  '/relatorio': { title: 'Relatório Semanal', subtitle: 'Resumo executivo da semana' },
 };
 
-export function Header() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export function Header({ onMenuClick }: HeaderProps) {
   const pathname = usePathname();
   const { alerts } = useAppStore();
   const page = PAGE_TITLES[pathname] ?? { title: 'LifeOS', subtitle: '' };
@@ -29,10 +34,15 @@ export function Header() {
   });
 
   return (
-    <header className="h-14 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 flex items-center px-6 gap-4 sticky top-0 z-30">
-      <div className="flex-1">
-        <h1 className="text-base font-semibold text-white">{page.title}</h1>
-        <p className="text-xs text-slate-500">{today}</p>
+    <header className="h-14 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 flex items-center px-4 lg:px-6 gap-4 sticky top-0 z-30">
+      {/* Mobile menu button */}
+      <button onClick={onMenuClick} className="lg:hidden p-1.5 text-slate-400 hover:text-slate-200 transition-colors">
+        <Menu size={20} />
+      </button>
+
+      <div className="flex-1 min-w-0">
+        <h1 className="text-base font-semibold text-white truncate">{page.title}</h1>
+        <p className="text-xs text-slate-500 hidden sm:block truncate">{today}</p>
       </div>
 
       <div className="flex items-center gap-2">
@@ -56,12 +66,8 @@ export function Header() {
 
         <button className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm text-white font-medium transition-all">
           <Plus size={14} />
-          <span className="hidden md:block">Novo</span>
+          <span className="hidden sm:block">Novo</span>
         </button>
-
-        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-          U
-        </div>
       </div>
     </header>
   );

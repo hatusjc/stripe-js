@@ -1,15 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useFinanceStore } from '@/lib/store/useFinanceStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { StatCard } from '@/components/ui/StatCard';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ProgressBar } from '@/components/ui/ProgressBar';
-import { formatCurrency, formatDate, daysUntil, cn } from '@/lib/utils';
+import { CSVImport } from '@/components/finance/CSVImport';
+import { formatCurrency, formatDate, cn } from '@/lib/utils';
 import {
   DollarSign, TrendingUp, TrendingDown, CreditCard, PiggyBank,
-  Plus, ArrowUpRight, ArrowDownLeft, AlertCircle, Target
+  Plus, ArrowUpRight, ArrowDownLeft, AlertCircle, Target, Upload
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
@@ -29,6 +31,7 @@ const categoryData = [
 
 export function FinancasPage() {
   const { transactions, accounts, goals, debts, getTotalBalance, getMonthlyIncome, getMonthlyExpenses } = useFinanceStore();
+  const [showCSVImport, setShowCSVImport] = useState(false);
 
   const totalBalance = getTotalBalance();
   const income = getMonthlyIncome();
@@ -49,8 +52,12 @@ export function FinancasPage() {
           <h2 className="text-lg font-bold text-white">Finanças</h2>
           <p className="text-sm text-slate-400">Gestão financeira completa</p>
         </div>
-        <Button variant="primary" icon={<Plus size={14} />}>Nova Transação</Button>
+        <div className="flex gap-2">
+          <Button variant="secondary" icon={<Upload size={14} />} onClick={() => setShowCSVImport(true)}>Importar CSV</Button>
+          <Button variant="primary" icon={<Plus size={14} />}>Nova Transação</Button>
+        </div>
       </div>
+      {showCSVImport && <CSVImport onClose={() => setShowCSVImport(false)} />}
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
