@@ -34,7 +34,7 @@ export default function DecisoesPage() {
           { label: 'Tomadas', count: decisions.filter((d) => d.status === 'tomada').length, color: 'text-emerald-400' },
           { label: 'Revisando', count: decisions.filter((d) => d.status === 'revisando').length, color: 'text-blue-400' },
         ].map((s) => (
-          <div key={s.label} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+          <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
             <p className={cn('text-2xl font-bold', s.color)}>{s.count}</p>
             <p className="text-xs text-slate-400 mt-1">{s.label}</p>
           </div>

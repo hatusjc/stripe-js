@@ -137,7 +137,7 @@ export default function RelatorioPage() {
         {/* Main sections */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Life Score por área */}
-          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
             <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <Star size={14} className="text-amber-400" />
               Life Score por Área
@@ -162,7 +162,7 @@ export default function RelatorioPage() {
           </div>
 
           {/* Execução */}
-          <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
             <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
               <CheckCircle2 size={14} className="text-blue-400" />
               Execução da Semana
@@ -197,7 +197,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Objetivos */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Target size={14} className="text-orange-400" />
             Status dos Objetivos
@@ -217,7 +217,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Responsabilidades */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
             <Shield size={14} className="text-red-400" />
             Saúde das Responsabilidades
@@ -234,7 +234,7 @@ export default function RelatorioPage() {
         </div>
 
         {/* Patrimônio */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 sm:p-5">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
           <p className="text-sm font-semibold text-white mb-3">Resumo Patrimonial</p>
           <div className="grid grid-cols-3 gap-3">
             <div>

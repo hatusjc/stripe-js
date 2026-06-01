@@ -50,7 +50,7 @@ export default function SaudePage() {
         {healthGoals.slice(0, 3).map((goal) => {
           const pct = Math.min(100, (goal.current / goal.target) * 100);
           return (
-            <div key={goal.id} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+            <div key={goal.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
               <p className="text-xs text-slate-400">{goal.title}</p>
               <div className="flex items-end gap-1 mt-1">
                 <p className={cn('text-xl font-bold', getScoreColor(pct))}>{goal.current}</p>

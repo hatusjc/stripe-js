@@ -86,7 +86,7 @@ export default function CheckinPage() {
           <div className="text-center py-20 text-slate-500">Nenhum check-in realizado ainda.</div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
               <h3 className="text-sm font-semibold text-white mb-4">Evolução do Life Score</h3>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={trendData}>
@@ -99,7 +99,7 @@ export default function CheckinPage() {
               </ResponsiveContainer>
             </div>
             {radarData.length > 0 && (
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
                 <h3 className="text-sm font-semibold text-white mb-4">Perfil Último Check-in</h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <RadarChart data={radarData}>
@@ -112,7 +112,7 @@ export default function CheckinPage() {
             )}
             <div className="lg:col-span-2 space-y-3">
               {history.slice().reverse().map((e) => (
-                <div key={e.id} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+                <div key={e.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Calendar size={14} className="text-blue-400" />

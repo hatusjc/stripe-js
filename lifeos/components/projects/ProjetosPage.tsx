@@ -59,7 +59,7 @@ export function ProjetosPage() {
           { label: 'Em Risco', value: stats.risk, color: 'text-red-400' },
           { label: 'Concluídos', value: stats.done, color: 'text-emerald-400' },
         ].map((s) => (
-          <div key={s.label} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-2.5 sm:p-4 text-center">
+          <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-2xl p-2.5 sm:p-4 text-center">
             <p className={cn('text-xl sm:text-2xl font-bold', s.color)}>{s.value}</p>
             <p className="text-[10px] sm:text-xs text-slate-400 mt-1 truncate">{s.label}</p>
           </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { Bell, Search, Plus, Menu } from 'lucide-react';
+import { Bell, Search, Plus, Zap } from 'lucide-react';
 import { useAppStore } from '@/lib/store/useAppStore';
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
@@ -42,10 +42,10 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   return (
     <header className="h-14 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 flex items-center px-4 lg:px-6 gap-4 sticky top-0 z-30">
-      {/* Mobile menu button */}
-      <button onClick={onMenuClick} className="lg:hidden p-1.5 text-slate-400 hover:text-slate-200 transition-colors">
-        <Menu size={20} />
-      </button>
+      {/* Mobile logo */}
+      <div className="lg:hidden w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shrink-0">
+        <Zap size={14} className="text-white" />
+      </div>
 
       <div className="flex-1 min-w-0">
         <h1 className="text-base font-semibold text-white truncate">{page.title}</h1>

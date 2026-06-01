@@ -26,15 +26,15 @@ export default function ResponsabilidadesPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className="text-xl sm:text-2xl font-bold text-slate-200">{responsibilities.length}</p>
           <p className="text-xs text-slate-400 mt-1">Total</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className={cn('text-xl sm:text-2xl font-bold', getScoreColor(avgHealth))}>{avgHealth}</p>
           <p className="text-xs text-slate-400 mt-1">Saúde Média</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className="text-xl sm:text-2xl font-bold text-red-400">
             {responsibilities.filter((r) => r.healthScore < 60).length}
           </p>

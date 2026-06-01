@@ -54,19 +54,19 @@ export default function PatrimonioPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-xs text-slate-400">Patrimônio Líquido</p>
           <p className="text-xl font-bold text-emerald-400 mt-1">{formatCurrency(netWorth)}</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-xs text-slate-400">Total de Ativos</p>
           <p className="text-xl font-bold text-blue-400 mt-1">{formatCurrency(totalAssets)}</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-xs text-slate-400">Total de Dívidas</p>
           <p className="text-xl font-bold text-rose-400 mt-1">{formatCurrency(totalDebts)}</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-xs text-slate-400">Valorização</p>
           <div className="flex items-center gap-1 mt-1">
             {appreciation >= 0 ? <TrendingUp size={16} className="text-emerald-400" /> : <TrendingDown size={16} className="text-red-400" />}

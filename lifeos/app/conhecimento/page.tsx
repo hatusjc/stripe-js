@@ -57,7 +57,7 @@ export default function ConhecimentoPage() {
         {Object.entries(TYPE_LABELS).slice(0, 4).map(([type, label]) => {
           const count = notes.filter((n) => n.type === type).length;
           return (
-            <div key={type} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 flex items-center gap-3">
+            <div key={type} className="bg-slate-900 border border-slate-800 rounded-2xl p-3 flex items-center gap-3">
               <div className="w-8 h-8 bg-slate-700 rounded-lg flex items-center justify-center shrink-0">
                 {TYPE_ICONS[type]}
               </div>

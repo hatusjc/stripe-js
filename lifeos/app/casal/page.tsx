@@ -74,7 +74,7 @@ function CasalPageContent() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-800/60 border border-slate-700/50 rounded-xl p-1">
+      <div className="flex gap-1 bg-slate-900 border border-slate-800 rounded-2xl p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}

@@ -88,7 +88,7 @@ export function OnboardingWizard() {
         </div>
 
         {/* Step content */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-8 min-h-[340px] flex flex-col">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 min-h-[340px] flex flex-col">
           {step === 0 && (
             <div className="flex-1 flex flex-col items-center justify-center text-center">
               <div className="text-6xl mb-6">🚀</div>

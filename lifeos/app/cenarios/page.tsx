@@ -208,7 +208,7 @@ export default function CenariosPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Parameters */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-4">
           <div className="flex items-center gap-2 mb-2">
             <Calculator size={16} className="text-blue-400" />
             <h3 className="text-sm font-semibold text-white">Parâmetros</h3>
@@ -290,7 +290,7 @@ export default function CenariosPage() {
 
         {/* Chart + results */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
             <h3 className="text-sm font-semibold text-white mb-4">Projeção Comparativa</h3>
             <ResponsiveContainer width="100%" height={220}>
               <LineChart data={result.months}>

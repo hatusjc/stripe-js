@@ -122,19 +122,19 @@ export default function OrcamentoPage() {
 
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-slate-500 text-xs uppercase tracking-wider">Total Orçado</p>
           <p className="text-2xl font-bold text-white mt-1">{formatCurrency(totalBudget)}</p>
           <p className="text-slate-500 text-xs mt-1">este mês</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-slate-500 text-xs uppercase tracking-wider">Total Gasto</p>
           <p className={`text-2xl font-bold mt-1 ${totalSpent > totalBudget ? 'text-red-400' : 'text-emerald-400'}`}>
             {formatCurrency(totalSpent)}
           </p>
           <p className="text-slate-500 text-xs mt-1">{((totalSpent / totalBudget) * 100).toFixed(0)}% do orçamento</p>
         </div>
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
           <p className="text-slate-500 text-xs uppercase tracking-wider">Saldo Restante</p>
           <p className={`text-2xl font-bold mt-1 ${totalBudget - totalSpent < 0 ? 'text-red-400' : 'text-blue-400'}`}>
             {formatCurrency(totalBudget - totalSpent)}
@@ -161,7 +161,7 @@ export default function OrcamentoPage() {
       )}
 
       {/* Chart */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
         <div className="flex items-center gap-2 mb-4">
           <TrendingUp size={16} className="text-blue-400" />
           <h3 className="text-sm font-semibold text-white">Gasto vs Orçamento</h3>
@@ -194,7 +194,7 @@ export default function OrcamentoPage() {
           const over = spent > b.limit;
           const warn = pct >= 75 && !over;
           return (
-            <div key={b.id} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div key={b.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{b.icon}</span>

@@ -110,7 +110,7 @@ function OpenFinanceContent() {
           {connected.map((c) => {
             const bank = BANKS.find((b) => b.id === c.bankId);
             return (
-              <div key={c.id} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-4">
+              <div key={c.id} className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center gap-4">
                 <div className="w-10 h-10 bg-slate-800 rounded-xl flex items-center justify-center text-xl">{bank?.logo}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
@@ -261,7 +261,7 @@ function OpenFinanceContent() {
       )}
 
       {/* How it works */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
         <div className="flex items-center gap-2 mb-4">
           <Building2 size={16} className="text-blue-400" />
           <h3 className="text-sm font-semibold text-white">Como funciona o Open Finance?</h3>

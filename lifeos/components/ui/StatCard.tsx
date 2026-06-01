@@ -18,8 +18,8 @@ export function StatCard({ title, value, subtitle, trend, icon, iconBg, valueCol
   return (
     <div
       className={cn(
-        'bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 backdrop-blur-sm',
-        onClick && 'hover:bg-slate-800/80 hover:border-slate-600 cursor-pointer transition-all',
+        'bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4',
+        onClick && 'hover:bg-slate-800 hover:border-slate-700 cursor-pointer transition-all',
         className
       )}
       onClick={onClick}

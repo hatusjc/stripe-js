@@ -114,7 +114,7 @@ export function BankNotificationCenter() {
       )}
 
       {/* Simulate / Test input */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4 space-y-3">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
         <div className="flex items-center gap-2">
           <Zap size={14} className="text-blue-400" />
           <p className="text-sm font-semibold text-white">Simular notificação bancária</p>

@@ -28,15 +28,15 @@ export default function ObjetivosPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-2 sm:gap-4">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className="text-xl sm:text-2xl font-bold text-blue-400">{activeGoals.length}</p>
           <p className="text-xs text-slate-400 mt-1">Metas Ativas</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className="text-xl sm:text-2xl font-bold text-emerald-400">{completedGoals.length}</p>
           <p className="text-xs text-slate-400 mt-1">Concluídas</p>
         </div>
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 sm:p-4 text-center">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 text-center">
           <p className="text-xl sm:text-2xl font-bold text-amber-400">
             {activeGoals.length > 0
               ? Math.round(activeGoals.reduce((s, g) => s + g.progress, 0) / activeGoals.length)

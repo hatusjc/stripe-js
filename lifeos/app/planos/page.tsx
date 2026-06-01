@@ -187,7 +187,7 @@ function PlanosContent() {
 
           {/* Billing toggle */}
           <div className="flex justify-center">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-1 flex gap-1">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-1 flex gap-1">
               <button onClick={() => setBilling('monthly')} className={cn('px-5 py-2 rounded-lg text-sm font-medium transition-all', billing === 'monthly' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300')}>Mensal</button>
               <button onClick={() => setBilling('yearly')} className={cn('px-5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2', billing === 'yearly' ? 'bg-slate-700 text-white' : 'text-slate-500 hover:text-slate-300')}>
                 Anual <span className="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full px-1.5 py-0.5 font-bold">-30%</span>
@@ -293,7 +293,7 @@ function PlanosContent() {
           <h2 className="text-xl font-bold text-white text-center mb-6">Recursos exclusivos Premium</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {HIGHLIGHTS.map((h) => (
-              <div key={h.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex gap-3">
+              <div key={h.label} className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex gap-3">
                 <div className="w-9 h-9 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center justify-center shrink-0">
                   <h.icon size={16} className="text-amber-400" />
                 </div>
@@ -310,7 +310,7 @@ function PlanosContent() {
             { emoji: '⭐⭐⭐⭐⭐', text: '"O Espaço do Casal mudou nossa relação financeira. Chega de surpresas no fim do mês."', name: 'Ana & Pedro, SP' },
             { emoji: '⭐⭐⭐⭐⭐', text: '"O simulador de aposentadoria mostrou que posso me aposentar 8 anos antes do que eu pensava."', name: 'Roberto S., 41' },
           ].map((t) => (
-            <div key={t.name} className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <div key={t.name} className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
               <p className="text-sm mb-2">{t.emoji}</p>
               <p className="text-slate-300 text-sm italic mb-3">{t.text}</p>
               <p className="text-slate-500 text-xs">— {t.name}</p>
@@ -341,7 +341,7 @@ function PlanosContent() {
             { q: 'O que acontece com meus dados se fizer downgrade?', a: 'Nada é apagado. Você mantém todos os dados — apenas perde acesso aos recursos exclusivos Premium.' },
             { q: 'Meus dados financeiros ficam seguros?', a: 'Todos os dados ficam localmente no seu dispositivo. Com Supabase habilitado, há backup criptografado na nuvem.' },
           ].map((item) => (
-            <div key={item.q} className="bg-slate-900 border border-slate-800 rounded-xl p-4">
+            <div key={item.q} className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
               <p className="text-sm font-medium text-white mb-1">{item.q}</p>
               <p className="text-sm text-slate-400">{item.a}</p>
             </div>
